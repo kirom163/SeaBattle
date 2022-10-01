@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sea Battle</title>
+		<link rel="stylesheet" href="src/style.css" />
+	</head>
+	<body>
+		<div class="app">
+			<div class="app-header">
+				<h1 class="app-title">Морской бой</h1>
+				<span class="app-subtitle"
+					>Проект от 
+					<a href="https://knowyourmeme.com/memes/trollface" class="app-link" target="_blank"
+						>SeaBattle.com</a
+					></span
+				>
+			</div>
+			<div class="app-body">
+				<div data-side="player"></div>
+				<div class="app-menu">
+					<div class="app-actions" data-scene="preparation">
+						<button class="app-action" data-computer="simple" disabled>
+							ИИ: легкий
+						</button>
+						<button class="app-action" data-computer="middle" disabled>
+							ИИ: средний
+						</button>
+						<button class="app-action" data-computer="hard" disabled>
+							ИИ: ветеран
+						</button>
+						<button class="app-action" data-type="random" disabled>
+							случайный матч
+						</button>
+						<button class="app-action" data-type="challenge" disabled>
+							Вызвать на бой
+						</button>
+						<button class="app-action" data-action="manually">
+							Сбросить расстановку
+						</button>
+						<button class="app-action" data-action="randomize">
+							Случайная расстановка
+						</button>
+					</div>
+					<div class="app-actions hidden" data-scene="computer">
+						<div class="battlefield-status">Ваш ход</div>
+						<button class="app-action" data-action="giveup">Сдаться</button>
+						<button class="app-action" data-action="newgame">Новая игра</button>
+					</div>
+				</div>
+				<div data-side="opponent"></div>
+			</div>
+		</div>
+
+		<script src="src/additional.js"></script>
+		<script src="src/Mouse.js"></script>
+
+		<script src="src/Application.js"></script>
+		<script src="src/Scene.js"></script>
+		<script src="src/scenes/PreparationScene.js"></script>
+		<script src="src/scenes/ComputerScene.js"></script>
+
+		<script src="src/Battlefield.js"></script>
+		<script src="src/BattlefieldView.js"></script>
+
+		<script src="src/Ship.js"></script>
+		<script src="src/ShipView.js"></script>
+
+		<script src="src/Shot.js"></script>
+		<script src="src/ShotView.js"></script>
+
+		<script src="src/script.js"></script>
+	</body>
+</html>
