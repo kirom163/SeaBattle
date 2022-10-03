@@ -229,7 +229,7 @@ class Battlefield {
 				} 
 			}
 		}
-		console.log(this.shots);
+		//console.log(this.shots);
 		this.#changed = true;
 		return true;
 	}

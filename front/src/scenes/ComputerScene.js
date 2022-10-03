@@ -28,10 +28,10 @@ class ComputerScene extends Scene {
 		const newgameButton = document.querySelector('[data-action="newgame"]');
 		newgameButton.classList.add("hidden");
 
-		this.removeEventListeners.push(addEventListener(giveupButton, 'click', () => {
+		this.removeEventListeners.push(addListener(giveupButton, 'click', () => {
 			this.app.start("preparation");
 		}));
-		this.removeEventListeners.push(addEventListener(newgameButton, 'click', () => {
+		this.removeEventListeners.push(addListener(newgameButton, 'click', () => {
 			this.app.start("preparation");
 		}))
 	}
