@@ -33,6 +33,8 @@ class PreparationScene extends Scene {
 		document.querySelectorAll('.app-actions').forEach(element => element.classList.add('hidden'));
 		document.querySelector('[data-scene="preparation"]').classList.remove('hidden');
 
+		//Прячем вражеское поле
+		document.querySelector('[data-side="opponent"]').hidden = true;
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const shoresButton = document.querySelector('[data-action="shores"]');
@@ -126,16 +128,14 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="middle"]').disabled = false;
 			document.querySelector('[data-computer="hard"]').disabled = false;
 			document.querySelector('[data-type="random"]').disabled = false;
-            //Вражеское поле
-			document.querySelector('[data-side="opponent"]').hidden = false;
+            
 		}
 		else {
 			document.querySelector('[data-computer="simple"]').disabled = true;
 			document.querySelector('[data-computer="middle"]').disabled = true;
 			document.querySelector('[data-computer="hard"]').disabled = true;
 			document.querySelector('[data-type="random"]').disabled = true;
-			//Вражеское поле
-			document.querySelector('[data-side="opponent"]').hidden = true;
+			
 		}
 	}
     

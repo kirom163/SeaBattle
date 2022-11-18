@@ -32,6 +32,8 @@ class ComputerScene extends Scene {
 		document
 			.querySelector('[data-scene="computer"]')
 			.classList.remove("hidden");
+		//Показываем вражеское поле
+		document.querySelector('[data-side="opponent"]').hidden = false;
 		opponent.clear();
 		opponent.randomize(ShipView);
 
