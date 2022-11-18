@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Sea Battle</title>
 		<link rel="stylesheet" href="src/style.css" />
+		<link rel="stylesheet" href="src/drop.css"/>
 	</head>
 	<body>
 		<div class="app">
@@ -23,15 +24,21 @@
 				<div class="app-menu">
 					<p class="app-menu-text">Одиночная игра</p>
 					<div class="app-actions" data-scene="preparation">
-						<button class="app-action" data-computer="simple" disabled>
-							Сложность "Рядовой"
-						</button>
-						<button class="app-action" data-computer="middle" disabled>
-							Сложность "Лейтенант"
-						</button>
-						<button class="app-action" data-computer="hard" disabled>
-							Сложность "Адмирал"
-						</button>
+						<div class="dropdown">
+							<button onclick="dropDifficulty()" class="app-action" data-computer="difficulty">Выбрать сложность</button>
+							<div id="myDropdown" class="dropdown-content">
+								<a  data-computer="simple">
+									Сложность "Рядовой"
+								</a>
+								<a data-computer="middle" disabled>
+									Сложность "Лейтенант"
+								</a>
+								<a data-computer="hard" disabled>
+									Сложность "Адмирал"
+								</a>
+							</div>
+						</div>
+						<button class="app-action" data-load disabled>Загрузить игру</button>
 						<p class="app-menu-text">Сетевая игра</p>
 						<button class="app-action" data-type="random" disabled>
 							случайный матч
@@ -40,18 +47,26 @@
 							Вызвать на бой
 						</button>
 						<p class="app-menu-text">Параметры расстановки</p>
-						<button class="app-action" data-action="manually">
-							Сбросить расстановку
-						</button>
-						<button class="app-action" data-action="randomize">
-							Случайная расстановка
-						</button>
-						<button class="app-action" data-action="shores">
-							Расстановка "Берега"
-						</button>
-						<button class="app-action" data-action="diagonal">
-							Расстановка "Диагонали"
-						</button>
+						<div class="dropdown">
+							<button onclick="dropPlacement()" class="app-action" data-computer="difficulty">Выбрать расстановку</button>
+							<div id="DropdownPlacement" class="dropdown-content">
+								<a  data-action="manually">
+									Сбросить расстановку
+								</a>
+								<a data-action="randomize">
+									Случайная расстановка
+								</a>
+								<a data-action="shores">
+									Расстановка "Берега"
+								</a>
+								<a data-action="diagonal">
+									Расстановка "Диагонали"
+								</a>
+							</div>
+						</div>
+						<p class="app-menu-text">Дополнительно</p>
+						<button class="app-action" data-func="authorize" disabled>Авторизация</button>
+						<button class="app-action" data-func="help" disabled>Справка</button>
 					</div>
 					<div class="app-actions hidden" data-scene="computer">
 						<div class="battlefield-status">Ваш ход</div>
@@ -87,5 +102,7 @@
 		<script src="/socket.io/socket.io.js"></script>
 
 		<script src="src/script.js"></script>
+
+		<script src="src/dropaction.js"></script>
 	</body>
 </html>

@@ -35,6 +35,7 @@ class PreparationScene extends Scene {
 
 		//Прячем вражеское поле
 		document.querySelector('[data-side="opponent"]').hidden = true;
+
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const shoresButton = document.querySelector('[data-action="shores"]');
@@ -128,6 +129,8 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="middle"]').disabled = false;
 			document.querySelector('[data-computer="hard"]').disabled = false;
 			document.querySelector('[data-type="random"]').disabled = false;
+
+			document.querySelector('[data-computer="difficulty"]').disabled = false;
             
 		}
 		else {
@@ -136,6 +139,7 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="hard"]').disabled = true;
 			document.querySelector('[data-type="random"]').disabled = true;
 			
+			document.querySelector('[data-computer="difficulty"]').disabled = true;
 		}
 	}
     
