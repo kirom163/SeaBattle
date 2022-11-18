@@ -28,6 +28,11 @@ body {
 	gap: 5%;
 }
 
+.app-menu p {
+	text-align: center;
+	font-size: 20px;
+}
+
 .app-subtitle {
 	color: gray;
 }

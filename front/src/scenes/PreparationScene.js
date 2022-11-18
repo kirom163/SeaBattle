@@ -29,12 +29,14 @@ class PreparationScene extends Scene {
 		player.ships.forEach((ship) => (ship.killed = false));
 
 		this.removeEventListeners = [];
-		document.querySelectorAll('.app-actions')
-		.forEach(element => element.classList.add('hidden'));
+		document.querySelectorAll('.app-menu-text').forEach(element => element.classList.remove('hidden'));
+		document.querySelectorAll('.app-actions').forEach(element => element.classList.add('hidden'));
 		document.querySelector('[data-scene="preparation"]').classList.remove('hidden');
 
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
+		const shoresButton = document.querySelector('[data-action="shores"]');
+		const diagonalButton = document.querySelector('[data-action="diagonal"]');
 		const simpleButton = document.querySelector('[data-computer="simple"]');
 		const middleButton = document.querySelector('[data-computer="middle"]');
 		const hardButton = document.querySelector('[data-computer="hard"]');
@@ -42,6 +44,8 @@ class PreparationScene extends Scene {
 
 		this.removeEventListeners.push(addListener(manuallyButton, "click", () => this.manually()));
 		this.removeEventListeners.push(addListener(randomizeButton, "click", () => this.randomize()));
+		this.removeEventListeners.push(addListener(shoresButton, "click", () => this.shores()));
+		this.removeEventListeners.push(addListener(diagonalButton, "click", () => this.diagonal()));
 		this.removeEventListeners.push(addListener(simpleButton, "click", () => this.startComputer("simple")));
 		this.removeEventListeners.push(addListener(middleButton, "click", () => this.startComputer("middle")));
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
@@ -157,19 +161,44 @@ class PreparationScene extends Scene {
 		}
 	}
 
+	shores() {
+		const {player} = this.app;
+		this.app.player.shores(ShipView);
+
+		for (let i = 0; i < 10; i++) {
+			const ship = player.ships[i];
+			ship.startX = shipDatas[i].startX;
+			ship.startY = shipDatas[i].startY;
+		}
+	}
+
+	diagonal() {
+		const {player} = this.app;
+		this.app.player.diagonal(ShipView);
+
+		for (let i = 0; i < 10; i++) {
+			const ship = player.ships[i];
+			ship.startX = shipDatas[i].startX;
+			ship.startY = shipDatas[i].startY;
+		}
+	}
+
 	startComputer(level) {
 		const matrix = this.app.player.matrix;
 		const withoutShipItems = matrix.flat().filter((item) => !item.ship);
 		let untouchables = [];
-
+		let strategy = 0;
 		if (level === "simple") {
+			strategy = 1;
 		} else if (level === "middle") {
-			untouchables = getRandomSeveral(withoutShipItems, 20);
+			untouchables = getRandomSeveral(withoutShipItems, 0);
+			strategy = 2;
 		} else if (level === "hard") {
-			untouchables = getRandomSeveral(withoutShipItems, 40);
+			strategy = 3;
+			untouchables = getRandomSeveral(withoutShipItems, 0);
 		}
 
-		this.app.start("computer", untouchables);
+		this.app.start("computer", untouchables, strategy);
 	}
 
 }

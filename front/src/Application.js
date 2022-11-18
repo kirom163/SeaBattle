@@ -11,7 +11,7 @@ class Application {
 	constructor(scenes = {}) {
 		const mouse = new Mouse(document.body);
 		const player = new BattlefieldView(true);
-		const opponent = new BattlefieldView(false);
+		const opponent = new BattlefieldView(true);//Здесь поменять на false, чтобы скрыть вражеские корабли
 		const socket = io();
 
 		Object.assign(this, { mouse, player, opponent , socket});

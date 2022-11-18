@@ -1,6 +1,7 @@
 class Battlefield {
 	ships = [];
 	shots = [];
+	diagonal = 0;//Для диагоналей (тест)
 	#matrix = null;
 	#changed = true;
 
@@ -13,6 +14,17 @@ class Battlefield {
 		}
 
 		return true;
+	}
+
+	getDia() {
+		let res = 0;
+		for (const {x, y} of this.shots) {
+			if (this.inDiagonal(x,y)) {
+				res++;
+				console.log('dia: x ',x, ' y ', y);
+			}
+		}
+		return res;
 	}
 
 	get matrix() {
@@ -95,6 +107,17 @@ class Battlefield {
 		}
 		
 		return 0 <= x && x <= 9 && 0 <= y && y <= 9;
+	}
+
+	inShore(x, y) {
+		if ((x >= 2 && x <= 7) && (y >= 2 && y <= 7)) {
+			return false;
+		}
+		else return true;
+	}
+
+	inDiagonal(x,y) {
+		return x == y || x === (9-y);
 	}
 
 	addShip(ship, x, y) {
@@ -210,10 +233,12 @@ class Battlefield {
 					for (let x = ship.x - 1; x < ship.x + ship.size * dx + dy + 1; x++) {
 						if (this.inField(x,y)) {
 							const shot = new ShotView(x,y);
-							/* // Не удаляет лишний выстрел
-							if (!this.shots.find((s) => s.x === x && s.y === y)) {
-								this.shots.push(shot);
-							} */
+							 // Находит повторные выстрелы
+							if (this.shots.find((s) => s.x === x && s.y === y)) {
+								//this.shots.push(shot);
+								//console.log('found ', shot);
+							} 
+							else 
 							this.shots.push(shot);
 							//графика - возможно в будущем приведет к ошибкам
 							this.polygon.append(shot.div);
@@ -233,7 +258,86 @@ class Battlefield {
 		this.#changed = true;
 		return true;
 	}
+	//Выстрел с добиванием - пока что просто выстрел
+	addShotFinish(shot) {
+		for (const { x, y } of this.shots) {
+			if (x === shot.x && y === shot.y) {
+				return false;
+			}
+		}
 
+		this.shots.push(shot);
+		this.#changed = true;
+
+		const matrix = this.matrix;
+		const { x, y } = shot;
+
+		console.log('addShotFinish');
+
+		if (matrix[y][x].ship) {
+			shot.setVariant("wounded");
+
+			const { ship } = matrix[y][x];
+			const dx = ship.direction === "row";
+			const dy = ship.direction === "column";
+
+			let killed = true;
+
+			for (let i = 0; i < ship.size; i++) {
+				const cx = ship.x + dx * i;
+				const cy = ship.y + dy * i;
+				const item = matrix[cy][cx];
+
+				if (!item.wounded) {
+					killed = false;
+					break;
+				}
+			}
+
+
+			if (killed) {
+				ship.killed = true;
+
+				for (let i = 0; i < ship.size; i++) {
+					const cx = ship.x + dx * i;
+					const cy = ship.y + dy * i;
+
+					const shot = this.shots.find(
+						(shot) => shot.x === cx && shot.y === cy
+					);
+					shot.setVariant("killed")
+				}
+				
+				//Маркеры вокруг убитого поля - графическая часть  работает плохо (
+				for (let y = ship.y - 1; y < ship.y + ship.size * dy + dx + 1; y++) {
+					for (let x = ship.x - 1; x < ship.x + ship.size * dx + dy + 1; x++) {
+						if (this.inField(x,y)) {
+							const shot = new ShotView(x,y);
+							 // Находит повторные выстрелы
+							 if (this.shots.find((s) => s.x === x && s.y === y)) {
+								//this.shots.push(shot);
+								//console.log('found ', shot);
+							} 
+							else 
+							this.shots.push(shot);
+							//графика - возможно в будущем приведет к ошибкам
+							this.polygon.append(shot.div);
+							const cell = this.cells[shot.y][shot.x];
+							const cellRect = cell.getBoundingClientRect();
+							const rootRect = this.root.getBoundingClientRect();
+
+							shot.div.style.left = `${cellRect.left - rootRect.left}px`;
+							shot.div.style.top = `${cellRect.top - rootRect.top}px`;
+							//shot.setVariant("wounded", true);
+						}
+					}
+				} 
+			}
+		}
+	
+		this.#changed = true;
+		return true;
+	}
 
 	removeShot(shot) {
 		if (!this.shots.includes(shot)) {
@@ -272,6 +376,72 @@ class Battlefield {
 
 					this.removeShip(ship);
 					this.addShip(ship, x, y);
+				}
+			}
+		}
+	}
+	//Расстановка "Берега"
+	shores(ShipClass = Ship) {
+		this.removeAllShips();
+		console.log("shores");
+		for (let size = 4; size >= 1; size--) {
+			for (let n = 0; n < 5 - size; n++) {
+				const direction = getRandomFrom("row", "column");
+				const ship = new ShipClass(size, direction);
+
+				while (!ship.placed) {
+					const x = getRandomBetween(0, 9);
+					const y = getRandomBetween(0, 9);
+					let ok = true;
+					const dx = ship.direction === "row";
+					const dy = ship.direction === "column";
+					for (let i = 0; i < ship.size; i++) {
+						const cy = y + dy * i;
+						const cx = x + dx * i;
+			
+						if (!this.inField(cx,cy) || !this.inShore(cx,cy)) {
+							ok = false;
+							break;
+						}
+			
+					}
+					if (ok) {
+						this.removeShip(ship);
+						this.addShip(ship, x, y);
+					}
+				}
+			}
+		}
+	}
+	//Расстановка "Диагональ"
+	diagonal(ShipClass = Ship) {
+		this.removeAllShips();
+		console.log("diagonal");
+		for (let size = 4; size >= 1; size--) {
+			for (let n = 0; n < 5 - size; n++) {
+				const direction = getRandomFrom("row", "column");
+				const ship = new ShipClass(size, direction);
+
+				while (!ship.placed) {
+					const x = getRandomBetween(0, 9);
+					const y = getRandomBetween(0, 9);
+					let ok = true;
+					const dx = ship.direction === "row";
+					const dy = ship.direction === "column";
+					for (let i = 0; i < ship.size; i++) {
+						const cy = y + dy * i;
+						const cx = x + dx * i;
+			
+						if (!this.inField(cx,cy) || !this.inDiagonal(cx,cy)) {
+							ok = false;
+							break;
+						}
+			
+					}
+					if (ok) {
+						this.removeShip(ship);
+						this.addShip(ship, x, y);
+					}
 				}
 			}
 		}

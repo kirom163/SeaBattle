@@ -65,6 +65,10 @@ class BattlefieldView extends Battlefield {
 		}
 	}
 
+	getDia() {
+		return super.getDia();
+	}
+
 	addShip(ship, x, y) {
 		if (!super.addShip(ship, x, y)) {
 			return false;
@@ -108,6 +112,21 @@ class BattlefieldView extends Battlefield {
 
 	addShot(shot) {
 		if (!super.addShot(shot)) {
+			return false;
+		}
+
+		this.polygon.append(shot.div);
+		const cell = this.cells[shot.y][shot.x];
+		const cellRect = cell.getBoundingClientRect();
+		const rootRect = this.root.getBoundingClientRect();
+
+		shot.div.style.left = `${cellRect.left - rootRect.left}px`;
+		shot.div.style.top = `${cellRect.top - rootRect.top}px`;
+		return true;
+	}
+	//Выстрел с добиванием - графическая часть
+	addShotFinish(shot) {
+		if (!super.addShotFinish(shot)) {
 			return false;
 		}
 
