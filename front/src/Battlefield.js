@@ -414,7 +414,7 @@ class Battlefield {
 		}
 	}
 	//Расстановка "Диагональ"
-	diagonal(ShipClass = Ship) {
+	dia(ShipClass = Ship) {
 		this.removeAllShips();
 		console.log("diagonal");
 		for (let size = 4; size >= 1; size--) {
@@ -432,7 +432,7 @@ class Battlefield {
 						const cy = y + dy * i;
 						const cx = x + dx * i;
 			
-						if (!this.inField(cx,cy) || !this.inDiagonal(cx,cy)) {
+						if (!this.inField(cx,cy) || this.inDiagonal(cx,cy)) {
 							ok = false;
 							break;
 						}

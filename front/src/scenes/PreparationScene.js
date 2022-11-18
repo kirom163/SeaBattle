@@ -174,7 +174,7 @@ class PreparationScene extends Scene {
 
 	diagonal() {
 		const {player} = this.app;
-		this.app.player.diagonal(ShipView);
+		player.dia(ShipView);
 
 		for (let i = 0; i < 10; i++) {
 			const ship = player.ships[i];
