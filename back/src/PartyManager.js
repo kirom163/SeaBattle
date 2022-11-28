@@ -42,8 +42,24 @@ module.exports = class PartyManager {
                 const [player1, player2] = this.waitingRandom.splice(0,2);
                 const party = new Party(player1, player2);
                 this.parties.push(party);
+
+                const unsubscribe = party.subscribe(() => {
+                    this.removeParty(party);
+                    unsubscribe();
+                }) 
             }
-        })
+        });
+
+        socket.on("gaveup", () => {
+            if (player.party) {
+                player.party.gaveup(player);
+            }
+        });
+        socket.on("addShot", (x, y) => {
+            if (player.party) {
+                player.party.addShot(player, x, y);
+            }
+        });
     }
 
     disconnect(socket) {

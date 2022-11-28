@@ -1,4 +1,5 @@
 const Shot = require('./Shot');
+const ShotView = require('./ShotView');
 
 module.exports =  class Battlefield {
 	ships = [];
@@ -185,6 +186,7 @@ module.exports =  class Battlefield {
 	}
 
 	addShot(shot) {
+		console.log("shot from back");
 		for (const { x, y } of this.shots) {
 			if (x === shot.x && y === shot.y) {
 				return false;
@@ -234,7 +236,7 @@ module.exports =  class Battlefield {
 				for (let y = ship.y - 1; y < ship.y + ship.size * dy + dx + 1; y++) {
 					for (let x = ship.x - 1; x < ship.x + ship.size * dx + dy + 1; x++) {
 						if (this.inField(x,y)) {
-							const shot = new Shot(x,y);
+							const shot = new ShotView(x,y);
 							 // Находит повторные выстрелы
 							if (this.shots.find((s) => s.x === x && s.y === y)) {
 								//this.shots.push(shot);

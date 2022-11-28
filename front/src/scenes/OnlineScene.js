@@ -1,9 +1,11 @@
 //const Shot = require("../../../back/src/Shot");
-
+const sceneActions = document.querySelector('[data-scene="online"]');
+const giveupButton = sceneActions.querySelector('[data-action="giveup"]');
 class OnlineScene extends Scene {
     actionsBar = null;
 	status = "";
 	ownTurn = false;
+	removeEventListeners = [];
 
 	init() {
 		const actionsBar = document.querySelector('[data-scene="online"]');
@@ -60,10 +62,29 @@ class OnlineScene extends Scene {
 		//Показываем вражеское поле
 		document.querySelector('[data-side="opponent"]').hidden = false;
 		document.querySelectorAll(".app-actions").forEach((element) => element.classList.add("hidden"));
-		document.querySelector('[data-scene="online"]').classList.remove("hidden");
+		const sceneActions = document.querySelector('[data-scene="online"]');
+		sceneActions.classList.remove("hidden");
 		//Убираем лишний текст
 		document.querySelectorAll('.app-menu-text').forEach(element => element.classList.add('hidden'));
+		const giveupButton = sceneActions.querySelector('[data-action="giveup"]');
+		giveupButton.classList.remove("hidden");
+
+		this.removeEventListeners = [];
+		this.removeEventListeners.push(addListener(giveupButton, 'click', () => {
+			socket.emit("gaveup");
+			this.app.start("preparation");
+		}));
+
 		this.statusUpdate();
+	}
+
+	stop() {
+		//На месте убитых кораблей оставался выстрел "промах", причем только визуальная часть. Приходится так вот убирать.
+		document.querySelectorAll('.shot').forEach(element => element.remove());
+		for (const removeEventListener of this.removeEventListeners) {
+			removeEventListener();
+		}
+		this.removeEventListeners = [];
 	}
 
 	statusUpdate() {
@@ -73,8 +94,10 @@ class OnlineScene extends Scene {
 			statusDiv.textContent = "";
 		} else if (this.status === "randomFinding") {
 			statusDiv.textContent = "Поиск соперника";
+			giveupButton.textContent = "Отмена";
 		} else if (this.status === "play") {
 			statusDiv.textContent = this.ownTurn ? "Ваш ход" : "Ход противника";
+			giveupButton.textContent = "Сдаться";
 		} else if (this.status === "winner") {
 			statusDiv.textContent = "Вы выиграли ^_^";
 		} else if (this.status === "loser") {
@@ -86,6 +109,10 @@ class OnlineScene extends Scene {
 		const {mouse, player, opponent, socket} = this.app;
 		const cells = opponent.cells.flat();
 		cells.forEach(x => x.classList.remove("battlefield-item__active"));
+
+		if (["loser", "winner"].includes(this.status)) {
+			giveupButton.textContent = "Завершить игру";
+		}
 
 		if (player.loser) {
 			return;
@@ -103,5 +130,15 @@ class OnlineScene extends Scene {
 				socket.emit("addShot", x, y);
 			}
 		}
+	}
+
+	inField(x, y) {
+		const isNumber = (n) => parseInt(n) === n && !isNaN(n) && ![Infinity, -Infinity].includes(n)
+
+		if (!isNumber(x) || !isNumber(y)) {
+			return false;
+		}
+		
+		return 0 <= x && x <= 9 && 0 <= y && y <= 9;
 	}
 }
