@@ -1,0 +1,40 @@
+.logger{
+    padding-top:20px ;
+    display: block;
+    text-align: center;
+    position: relative;
+    top:0px;
+    left:37%;
+    
+    width: 500px ;
+    height: 367px;
+    border: 2px solid black;
+}
+.logger input{
+    margin-top: 10px;
+    display: block;
+    position: relative;
+    left:15%;
+    top:0px;
+    font-size: 30px;
+}
+.logger button{
+    margin-top: 10px;
+    display: flexbox;
+    text-align: center;
+    position: relative;
+    offset: 0px ;
+    font-size: 30px;
+}
+.logger h3{
+    font-size: 30px;
+}
+.logger p{
+    margin-top: 10px;
+    font-size: 25px;
+}
+.reg-syst{
+    border: 4px double rgb(36, 51, 255);
+    height: 25%;
+    margin-top: 5px;
+}
