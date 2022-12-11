@@ -110,10 +110,17 @@ class Battlefield {
 	}
 
 	inShore(x, y) {
-		if ((x >= 2 && x <= 7) && (y >= 2 && y <= 7)) {
+		if ((x >= 1 && x <= 8) && (y >= 1 && y <= 8)) {
 			return false;
 		}
 		else return true;
+	}
+
+	inCenter(x,y) {
+		if ((x >= 2 && x <= 7) && (y >= 2 && y <= 7)) {
+			return true;
+		}
+		else return false;
 	}
 
 	inDiagonal(x,y) {
@@ -398,8 +405,13 @@ class Battlefield {
 					for (let i = 0; i < ship.size; i++) {
 						const cy = y + dy * i;
 						const cx = x + dx * i;
-			
-						if (!this.inField(cx,cy) || !this.inShore(cx,cy)) {
+						//Проверяем, что все корабли больше 1 клетки находятся у берегов
+						if (size > 1 && (!this.inField(cx,cy) || !this.inShore(cx,cy))) {
+							ok = false;
+							break;
+						}
+						//Проверяем, что однопалубные корабли не на берегах
+						if (size === 1 && (!this.inField(cx,cy) || !this.inCenter(cx,cy))) {
 							ok = false;
 							break;
 						}
