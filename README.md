@@ -2,6 +2,7 @@
 A classic Sea Battle game in JS
 
 0) Чтобы запустить проект необходимо иметь установленным git bash и npm 
-1) В консоли git bash прописываем cd back   
-2) затем прописываем npm i
-3) затем nodemon index.js 
+1)прописываем npm install hbs --save
+2) В консоли git bash прописываем cd back   
+3) затем прописываем npm i
+4) затем nodemon index.js 
