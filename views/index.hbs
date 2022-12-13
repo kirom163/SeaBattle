@@ -18,6 +18,9 @@
 					></span
 				>
 				<p class="app-subtitle"><span data-playerCount>0</span> игроков онлайн</p>
+				  {{#if isLogging}}
+					<p class="app-subtitle">Вы вошли как: <mark><b>{{userName}}</b></mark></p>
+						{{/if}}
 			</div>
 			<div class="app-body">
 				<div data-side="player"></div>
@@ -66,7 +69,11 @@
 						</div>
 						<p class="app-menu-text">Дополнительно</p>
 
+                        {{#if isLogging}}
+						<button class="app-action" data-func="exittt" id="exittt">Выйти</button>
+						{{else}}
 						<button class="app-action" data-func="authorize" id="authorize">Авторизация</button>
+						{{/if}}
 						<button class="app-action" data-func="help" disabled>Справка</button>
 					</div>
 					<div class="app-actions hidden" data-scene="computer">

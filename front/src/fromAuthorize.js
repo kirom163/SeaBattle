@@ -1,24 +1,37 @@
 function sendUser(userName,userPassword){
-    let user=JSON.stringify({userbName:''});
+    let user=JSON.stringify({user:userName,password:userPassword});
     let request = new XMLHttpRequest();
+    console.log(userName,userPassword);
     request.open("POST", "/auth", true);   
     request.setRequestHeader("Content-Type", "application/json");
-   // const jsonParser = express.json();
+
+
+
     request.addEventListener("load", function () {
-    // получаем и парсим ответ сервера
-  //  console.log(responce);
+
     console.log(request);
     console.log(request.response)
-    // let receivedUser = JSON.parse(this.response);
-   //  console.log(receivedUser.JSON," JSON");
-    // console.log(receivedUser)
-    // return false;            рпорп
-    // console.log(receivedUser.userName, "-", receivedUser.userAge);   // смотрим ответ сервера
+    console.log(request.response.correctUser)
+    console.log(request.response)
+    let receivedUser = JSON.parse(request.response);
+    console.log(receivedUser);
+    if(receivedUser.correctUser===true){
+      redirect();
+    }else{
+      alert('Вы ввели неправильный логин или пароль');
+    }
  });
+
+
  request.send(user);
 }
+
+function check_correct(userName,password){
+  //здесь должна быть проверка на корректный пароль и пользователя, тип адэкватно записан или это хрень на 2 буквы
+  return true;
+}
 function redirect(){
-    window.location.href="authorize.html";
+    window.location.href="/index";
 }
 
 
@@ -52,17 +65,12 @@ button.addEventListener("click", function(){
     if (error){
         alert(sum_error);
     }else{
-      if(true){
+      if(check_correct(name,password)){
         sendUser(name,password)
-        //redirect()
       }else{
         alert('неправильный логин или пароль')
       }
-//let str='/authorize?s=1&';
-//str=str+'name='+login.value+'&'+'pass='+pass.value;
-//console.log(str)
-//window.close(this.window);
-//window.open(str);
+
 
 }
 
@@ -87,8 +95,7 @@ let str='/registration?s=2&';
 str=str+'name='+login.value+'&'+'pass='+pass.value;
 
 console.log(str)
-//this.window.
-//window.close(this.window);
+
 window.open(str);
 
 }})
