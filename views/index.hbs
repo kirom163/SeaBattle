@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sea Battle</title>
+		<link rel="stylesheet" href="src/style.css" />
+		<link rel="stylesheet" href="src/drop.css"/>
+	</head>
+	<body>
+		<div class="app">
+			<div class="app-header">
+				<h1 class="app-title">Морской бой</h1>
+				<span class="app-subtitle"
+					>Проект: 
+					<a href="https://github.com/kirom163/SeaBattle" class="app-link" target="_blank"
+						>SeaBattle</a
+					></span
+				>
+				<p class="app-subtitle"><span data-playerCount>0</span> игроков онлайн</p>
+			</div>
+			<div class="app-body">
+				<div data-side="player"></div>
+				<div class="app-menu">
+					<p class="app-menu-text">Одиночная игра</p>
+					<div class="app-actions" data-scene="preparation">
+						<div class="dropdown">
+							<button onclick="dropDifficulty()" class="app-action" data-computer="difficulty">Выбрать сложность</button>
+							<div id="myDropdown" class="dropdown-content">
+								<a  data-computer="simple">
+									Сложность "Рядовой"
+								</a>
+								<a data-computer="middle" disabled>
+									Сложность "Лейтенант"
+								</a>
+								<a data-computer="hard" disabled>
+									Сложность "Адмирал"
+								</a>
+							</div>
+						</div>
+						<button class="app-action" data-load disabled>Загрузить игру</button>
+						<p class="app-menu-text">Сетевая игра</p>
+						<button class="app-action" data-type="random" disabled>
+							случайный матч
+						</button>
+						<button class="app-action" data-type="challenge" disabled>
+							Вызвать на бой
+						</button>
+						<p class="app-menu-text">Параметры расстановки</p>
+						<div class="dropdown">
+							<button onclick="dropPlacement()" class="app-action" data-computer="difficulty">Выбрать расстановку</button>
+							<div id="DropdownPlacement" class="dropdown-content">
+								<a  data-action="manually">
+									Сбросить расстановку
+								</a>
+								<a data-action="randomize">
+									Случайная расстановка
+								</a>
+								<a data-action="shores">
+									Расстановка "Берега"
+								</a>
+								<a data-action="diagonal">
+									Расстановка "Диагонали"
+								</a>
+							</div>
+						</div>
+						<p class="app-menu-text">Дополнительно</p>
+
+						<button class="app-action" data-func="authorize" id="authorize">Авторизация</button>
+						<button class="app-action" data-func="help" disabled>Справка</button>
+					</div>
+					<div class="app-actions hidden" data-scene="computer">
+						<div class="battlefield-status">Ваш ход</div>
+						<button class="app-action" data-action="giveup">Сдаться</button>
+						<button class="app-action" data-action="newgame">Новая игра</button>
+					</div>
+					<div class="app-actions hidden" data-scene="online">
+						<div class="battlefield-status">Ваш ход</div>
+						<button class="app-action" data-action="giveup">Сдаться</button>
+					</div>
+				</div>
+				<div data-side="opponent"></div>
+			</div>
+		</div>
+
+		<script src="src/additional.js"></script>
+		<script src="src/Mouse.js"></script>
+
+		<script src="src/Application.js"></script>
+		<script src="src/Scene.js"></script>
+		<script src="src/scenes/PreparationScene.js"></script>
+		<script src="src/scenes/ComputerScene.js"></script>
+		<script src="src/scenes/OnlineScene.js"></script>
+
+		<script src="src/Battlefield.js"></script>
+		<script src="src/login.js"></script>
+		<script src="src/BattlefieldView.js"></script>
+
+		<script src="src/Ship.js"></script>
+		<script src="src/ShipView.js"></script>
+
+		<script src="src/Shot.js"></script>
+		<script src="src/ShotView.js"></script>
+
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script src="src/script.js"></script>
+
+		<script src="src/dropaction.js"></script>
+		<script src="src/ToAuthorize.js"></script>
+	</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sea Battle</title>
+		<link rel="stylesheet" href="src/style.css" />
+		<link rel="stylesheet" href="src/drop.css"/>
+		<link rel="stylesheet" href="src/auth.css"/>
+	</head>
+    <body>
+		<div class="app">
+			<div class="app-header">
+				<h1 class="app-title">Морской бой</h1>
+				<span class="app-subtitle"
+					>Проект: 
+					<a href="https://github.com/kirom163/SeaBattle" class="app-link" target="_blank">SeaBattle</a></span>
+				<p class="app-subtitle"><span data-playerCount>0</span> игроков онлайн</p>
+			
+			</div>
+		</div>
+		<form class="inl" id="log" method="POST" ></form>
+		<div class="logger" >
+			<div class="auth">
+				<h3 class="tit-syst">Регистрация</h3>
+				<p class="tit-syst">Введите логин</p>
+				<input type="text" name="userLogin" id="user-login">
+				<p class="tit-syst">Введите пароль</p>
+				<input type="password" name="userPass" id="user-pass">
+				
+				<button class="inl" type="submit" id="toRege">Зарегистрироваться</button>
+				
+				<button type="submit" id="cancel-to-index" action="/index.html">Отмена</button>
+			</div>
+			
+	</form>
+		
+		<script type="module" src="src/fromAuthorize.js"></script>
+		</body>
+		</html>
