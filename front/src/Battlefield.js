@@ -389,13 +389,16 @@ class Battlefield {
 	}
 	//Расстановка "Берега"
 	shores(ShipClass = Ship) {
+		let tres=true;
+		whiter:while(tres){
 		this.removeAllShips();
 		console.log("shores");
 		let count_2=0;
 		let count_g=0;
 		let count_f=0;
-		for (let size = 4; size >= 1; size--) {
+		outer_block:for (let size = 4; size >= 1; size--) {
 			for (let n = 0; n < 5 - size; n++) {
+			if(count_g===1){count_g=0;n++;continue;}	
 				const direction = getRandomFrom("row", "column");
 				let ship = new ShipClass(size, direction);
 
@@ -411,8 +414,18 @@ class Battlefield {
 				while (!ship.placed&&a<400) {
 					let x = getRandomBetween(0, 9);
 					let y = getRandomBetween(0, 9);
-					if (a>200){
-						console.log('over 200-----------------------------------------',a)
+					if(a>200){
+						size=0;
+						n=10;
+						console.log('overload=======================================================================================================')
+						this.removeAllShips();
+						//this.shores();
+					//	alert('Произошла небольшая ошибка генерации расстановки, перезапустите расстановку')
+						continue whiter;
+						
+					}
+					if (a>800){
+						console.log('over 800-----------------------------------------',a);
 						//console.log('-------','cx:',cx,'cy:',cy,'x:'+x,'y:'+y,this.inField(cx,cy),this.inShore(cx,cy),ship)
 						x=real_x;
 						y=real_y;
@@ -422,7 +435,8 @@ class Battlefield {
 						if(storona===2||storona===4){real_y++;
 							 real_direction='column';
 							}
-						if(storona===3&&real_x===9){storona=4;real_x=0;real_y=0;real_direction='column';}
+							if(storona===4&&real_y===9){break;}
+							if(storona===3&&real_x===9){storona=4;real_x=0;real_y=0;real_direction='column';}
 						if(storona===1&&real_x===9){storona=2;real_x=9;real_y=0;real_direction='column';}
 						if(storona===2&&real_y===9){storona=3;real_x=0;real_y=9;real_direction='row';}
 						console.log(ship.direction,real_direction,'x:'+x,'y:'+y)
@@ -431,18 +445,19 @@ class Battlefield {
 						console.log(ship.direction,real_direction,'-new',size)
 				
 						
+						
 					}
 					let ok = true;
 					const dx = ship.direction === "row";
 					
 					const dy = ship.direction === "column";
-					if (a>200){console.log(dx,dy)}
+					if (a>800){console.log(dx,dy)}
 					for (let i = 0; i < ship.size; i++) {
 						const cy = y + dy * i;
 						const cx = x + dx * i;
 						
 						
-						if(a>200){console.log(cx,cy,this.inField(cx,cy),this.inShore(cx,cy),'----')}
+						if(a>800){console.log(ship.size,cx,cy,this.inField(cx,cy),this.inShore(cx,cy),'----',x,y,storona)}
 						//Проверяем, что все корабли больше 1 клетки находятся у берегов
 						if (size > 1 && (!this.inField(cx,cy) || !this.inShore(cx,cy))) {
 							ok = false;
@@ -455,29 +470,43 @@ class Battlefield {
 						}
 			
 					}
-					
+					//if(count_g===1){console.log('fetch');n=8;break;}
 					a++;
 					if (ok) {
-						if(a>200){count_2++; console.log('tring',x,y,'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',count_2)}
-						if (inv==1||inv==3){
+						
+						if(a>800){count_2++; console.log('tring',x,y,'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',count_2);}
+						if ((inv==1||inv==3)){if (count_g===0){
 							let ship1=new ShipClass(size,ship.direction);
-							if(a>200){count_g++; console.log('tring',x,y,'ggggggggggggggggggggggggggggggggggggggggggggggg',count_g)}
+							if(a>800){count_g++; console.log('tring',x,y,'ggggggggggggggggggggggggggggggggggggggggggggggg',count_g)}
 						this.removeShip(ship);
 						this.removeShip(ship1);
 						this.addShip(ship1, x, y);
-						if(ship1.placed){n++;break;}
+						if(ship1.placed){n++; break;}
 						}else{
-							if(a>200){count_f++; console.log('tring',x,y,'ffffffffffffffffffffffffffffffffffffff',count_f)}
+							//this.removeShip(ship);
+						//	count_g=0;
+						//	n++;
+						this.removeShip(ship);
+							console.log('something doing');
+						}
+						}else{
+							if(a>800){count_f++; console.log('tring',x,y,'ffffffffffffffffffffffffffffffffffffff',count_f)}
 							this.removeShip(ship);
 						this.addShip(ship, x, y);
-						
+					//	if(ship.placed){n++;break;}
 						}
 					}
 				}
 				
 			}
 		}
-	}
+		tres=false;
+		if(count_g>0&&false){
+			console.log('overload=======================================================================================================')
+			this.shores(ShipClass==Ship);
+		}
+
+	}}
 	//Расстановка "Диагональ"
 	dia(ShipClass = Ship) {
 		this.removeAllShips();
