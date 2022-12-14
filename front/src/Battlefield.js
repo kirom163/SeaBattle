@@ -391,20 +391,58 @@ class Battlefield {
 	shores(ShipClass = Ship) {
 		this.removeAllShips();
 		console.log("shores");
+		let count_2=0;
+		let count_g=0;
+		let count_f=0;
 		for (let size = 4; size >= 1; size--) {
 			for (let n = 0; n < 5 - size; n++) {
 				const direction = getRandomFrom("row", "column");
-				const ship = new ShipClass(size, direction);
+				let ship = new ShipClass(size, direction);
 
-				while (!ship.placed) {
-					const x = getRandomBetween(0, 9);
-					const y = getRandomBetween(0, 9);
+				
+				let a=0;
+				let real_x=0;
+				let real_y=0;
+				let storona=1;
+				let real_direction='row';
+
+				let inv=0;
+
+				while (!ship.placed&&a<400) {
+					let x = getRandomBetween(0, 9);
+					let y = getRandomBetween(0, 9);
+					if (a>200){
+						console.log('over 200-----------------------------------------',a)
+						//console.log('-------','cx:',cx,'cy:',cy,'x:'+x,'y:'+y,this.inField(cx,cy),this.inShore(cx,cy),ship)
+						x=real_x;
+						y=real_y;
+						if(storona===1||storona===3){real_x++;
+							 real_direction='row';
+							}
+						if(storona===2||storona===4){real_y++;
+							 real_direction='column';
+							}
+						if(storona===3&&real_x===9){storona=4;real_x=0;real_y=0;real_direction='column';}
+						if(storona===1&&real_x===9){storona=2;real_x=9;real_y=0;real_direction='column';}
+						if(storona===2&&real_y===9){storona=3;real_x=0;real_y=9;real_direction='row';}
+						console.log(ship.direction,real_direction,'x:'+x,'y:'+y)
+						
+						if(ship.direction!=real_direction){ship.direction=real_direction;inv++;}
+						console.log(ship.direction,real_direction,'-new',size)
+				
+						
+					}
 					let ok = true;
 					const dx = ship.direction === "row";
+					
 					const dy = ship.direction === "column";
+					if (a>200){console.log(dx,dy)}
 					for (let i = 0; i < ship.size; i++) {
 						const cy = y + dy * i;
 						const cx = x + dx * i;
+						
+						
+						if(a>200){console.log(cx,cy,this.inField(cx,cy),this.inShore(cx,cy),'----')}
 						//Проверяем, что все корабли больше 1 клетки находятся у берегов
 						if (size > 1 && (!this.inField(cx,cy) || !this.inShore(cx,cy))) {
 							ok = false;
@@ -417,11 +455,26 @@ class Battlefield {
 						}
 			
 					}
+					
+					a++;
 					if (ok) {
+						if(a>200){count_2++; console.log('tring',x,y,'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',count_2)}
+						if (inv==1||inv==3){
+							let ship1=new ShipClass(size,ship.direction);
+							if(a>200){count_g++; console.log('tring',x,y,'ggggggggggggggggggggggggggggggggggggggggggggggg',count_g)}
 						this.removeShip(ship);
+						this.removeShip(ship1);
+						this.addShip(ship1, x, y);
+						if(ship1.placed){n++;break;}
+						}else{
+							if(a>200){count_f++; console.log('tring',x,y,'ffffffffffffffffffffffffffffffffffffff',count_f)}
+							this.removeShip(ship);
 						this.addShip(ship, x, y);
+						
+						}
 					}
 				}
+				
 			}
 		}
 	}
