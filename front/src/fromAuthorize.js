@@ -22,9 +22,32 @@ function sendUser(userName,userPassword){
       }
     }
  });
-
-
  request.send(user);
+}
+
+function regUser(userName,userPassword){
+  let user=JSON.stringify({user:userName,password:userPassword});
+  let request = new XMLHttpRequest();
+  console.log(userName,userPassword);
+  request.open("POST", "/reg", true);   
+  request.setRequestHeader("Content-Type", "application/json");
+  request.addEventListener("load", function () {
+  console.log(request);
+  console.log(request.response)
+  console.log(request.response.correctUser)
+  console.log(request.response)
+  let receivedUser = JSON.parse(request.response);
+  console.log(receivedUser);
+  if(receivedUser.correctUser===true){
+    redirect();
+  }else{if(receivedUser.countUser===1){
+    alert('Такой пользователь уже существует');}
+    else{if(!receivedUser.correctConnection)
+      alert('Нет подключения с базой данных')
+    }
+  }
+});
+request.send(user);
 }
 
 function check_correct(userName,password){
@@ -91,7 +114,7 @@ button2.addEventListener("click", function(){
       alert(sum_error);
   }else{
     if(check_correct(name,password)){
-      sendUser(name,password)
+      regUser(name,password)
     }else{
       alert('неправильный логин или пароль')
     }

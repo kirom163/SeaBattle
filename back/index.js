@@ -120,6 +120,46 @@ if(correctConnection){
     ;
 
 });
+app.post("/reg", jsonParser, function (request, response) {
+    let correctUserx=false;
+    let countUserx=-1;
+    console.log('-----r---',request.body);
+    let user=request.body.user;
+    let password=request.body.password;
+    console.log(user,password);
+    checkConnect();
+    console.log(correctConnection,'-connect to base')
+    if(correctConnection){
+        connectionsql.query('select * from database1.logins where logins.login="'+user+'"',
+        function(err,results,fields){
+            console.log(err,'-error');
+            console.log(results,'results-connection');
+            console.log(results.length,'-count');
+            countUserx=results.length;
+            let try_reg=false;
+       if(countUserx===1){console.log(results[0].login,'-reg')
+       
+        isLogging=false;
+        correctUserx=false;
+        userName='n';
+        console.log('wrong reg');
+        response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection});
+
+       }else{
+
+        connectionsql.query('insert into database1.logins values ("'+user+'", "'+password+'");',function(err,results,fields){
+            console.log(err,'-error');
+            console.log(results,'results-connection');
+            console.log(results.length,'-count');
+        });
+
+         isLogging=true;
+        correctUserx=true;
+        userName=user;
+        console.log('success reg');
+        response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection});
+       }
+    })}});
 app.get("/exit", jsonParser, function (request, response) {
    
     console.log(userName,isLogging,'-метаданные выхода');
