@@ -27,6 +27,10 @@ class Battlefield {
 		return res;
 	}
 
+	save_strat(){
+		console.log(this.#matrix)
+		console.log(JSON.stringify(this.#matrix));
+	}
 	get matrix() {
 		if (!this.#changed) {
 			return this.#matrix;

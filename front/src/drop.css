@@ -18,8 +18,20 @@
     border: 2px solid #4CAF50;
 	border-radius: 4px;
 }
+.app-action1 {
+	width: 210px;
+	padding: 10px;
+	color: black; 
+    border: 2px solid #4CAF50;
+	border-radius: 4px;
+  background-color: #b5f4e1;
+}
 
   .app-action:hover {
+	background-color: #4CAF50;
+    color: white;
+}
+.app-action1:hover {
 	background-color: #4CAF50;
     color: white;
 }
@@ -27,6 +39,7 @@
   .dropdown {
     position: relative;
     display: inline-block;
+    max-width: 220px;
 }
   
   .dropdown-content {

@@ -142,7 +142,10 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="difficulty"]').disabled = true;
 		}
 	}
-    
+    save_strat(){
+		console.log('кеееек')
+		//const {player} = this.app;
+	}
 	//Случайная расстановка
 	randomize() {
 		const {player} = this.app;

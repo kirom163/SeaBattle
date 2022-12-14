@@ -33,9 +33,7 @@ console.log(correctConnection);
 let userName='nf';
 let isLogging=false;
 
-//Добавил чтоб firefox не ругался
-console.log(session);
-//
+
 //создание приложения экспресс
 const app = express();
 app.set('view engine','hbs');
@@ -70,7 +68,15 @@ app.get("/index(.html)?",jsonParser, avs);
 app.get("/",jsonParser, avs);
 app.post("/index(.html)?",jsonParser, avs)
 
-//проверить правильность прихода запроса, может не на ту страницу отправляет
+app.post("/logos", jsonParser, function (request, response) {
+    //response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
+//console.log(this.app.player.battlefield);
+//console.log(this.app);
+//console.log(pm.players[0].battlefield)
+
+})
+
+
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
 let countUserx=-1;
