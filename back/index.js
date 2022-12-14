@@ -13,15 +13,23 @@ const connectionsql = mysql.createConnection({
     database: "database1",
     password: "1111"
   });
-  connectionsql.connect(function(err){
-    if (err) {
-      return console.error("Ошибка: " + err.message);
-    }
-    else{
-      console.log("Подключение к серверу MySQL успешно установлено");
-    }
- });
+  let correctConnection=false;
+  function checkConnect(){
+    connectionsql.connect(function(err){
+        if (err) {
+            correctConnection=false;
+          return console.error("Ошибка: " + err.message);
+        }
+        else{
+            correctConnection=true;
+          console.log("Подключение к серверу MySQL успешно установлено");
+        }
+  });
+}
 
+console.log(correctConnection)
+checkConnect(correctConnection);
+console.log(correctConnection);
 let userName='nf';
 let isLogging=false;
 
@@ -65,30 +73,51 @@ app.post("/index(.html)?",jsonParser, avs)
 //проверить правильность прихода запроса, может не на ту страницу отправляет
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
+let countUserx=-1;
 console.log('-----s---',request.body);
 let user=request.body.user;
 let password=request.body.password;
 console.log(user,password);
-    connectionsql.query('select * from database1.logins where logins.login="'+user+'" and logins.password="'+password+'"',
+checkConnect();
+console.log(correctConnection,'-connect to base')
+if(correctConnection){
+    connectionsql.query('select * from database1.logins where logins.login="'+user+'"',
     function(err,results,fields){
         console.log(err,'-error');
         console.log(results,'results-connection');
-        console.log(results.fieldCount,'-count');
-        console.log(results[0].login,'-login')
+        console.log(results.length,'-count');
+        countUserx=results.length;
+   if(countUserx===1)   {console.log(results[0].login,'-login')
         if (results[0].login===user&&results[0].password===password){
             isLogging=true;
             correctUserx=true;
             userName=user;
             console.log("success login");
-            response.json({correctUser:correctUserx})
+            response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
         }else{
             isLogging=false;
             correctUserx=false;
             userName='n';
             console.log('wrong login');
-            response.json({correctUser:correctUserx})
+            response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
         }
-    });
+    }else{
+        isLogging=false;
+        correctUserx=false;
+        userName='n';
+        console.log('no login');
+        response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
+    }
+}
+
+    )}else{
+        isLogging=false;
+        correctUserx=false;
+        userName='n';
+        console.log('no connect to base');
+        response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection}) 
+    }
+    ;
 
 });
 app.get("/exit", jsonParser, function (request, response) {

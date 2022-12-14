@@ -4,11 +4,7 @@ function sendUser(userName,userPassword){
     console.log(userName,userPassword);
     request.open("POST", "/auth", true);   
     request.setRequestHeader("Content-Type", "application/json");
-
-
-
     request.addEventListener("load", function () {
-
     console.log(request);
     console.log(request.response)
     console.log(request.response.correctUser)
@@ -17,8 +13,13 @@ function sendUser(userName,userPassword){
     console.log(receivedUser);
     if(receivedUser.correctUser===true){
       redirect();
-    }else{
-      alert('Вы ввели неправильный логин или пароль');
+    }else{if(receivedUser.countUser===1){
+      alert('Вы ввели неправильный пароль');}
+      else{if(receivedUser.correctConnection)
+        alert('Такого пользователя не существует, чтобы зарегистрировать этого пользователя нажмие кнопку "Зарегистрироваться"')
+        else
+        alert('Нет подключения с базой данных')
+      }
     }
  });
 
@@ -70,8 +71,6 @@ button.addEventListener("click", function(){
       }else{
         alert('неправильный логин или пароль')
       }
-
-
 }
 
 })
@@ -80,7 +79,7 @@ button2.addEventListener("click", function(){
   let password=pass.value;
   let error=false;
   let sum_error="";
-  if (name===""){
+    if (name===""){
       error=true;
       sum_error+="не введен логин\n";
   }
@@ -91,44 +90,11 @@ button2.addEventListener("click", function(){
   if (error){
       alert(sum_error);
   }else{
-let str='/registration?s=2&';
-str=str+'name='+login.value+'&'+'pass='+pass.value;
-
-console.log(str)
-
-window.open(str);
-
-}})
-
-let button3=document.querySelector("#toRege");
-if (button3!=null){
-button3.addEventListener("click", function(){
-  let name=login.value;
-  let password=pass.value;
-  let error=false;
-  let sum_error="";
-  if (name===""){
-      error=true;
-      sum_error+="не введен логин\n";
-  }
-  if (password===""){
-      error=true;
-      sum_error+="не введен пароль";
-  }
-  if (error){
-      alert(sum_error);
-  }else{
-let str='/registration?s=2&';
-str=str+'name='+login.value+'&'+'pass='+pass.value;
-
-console.log(str)
-//this.window.
-//window.close(this.window);
-window.open(str);
-
-}})
+    if(check_correct(name,password)){
+      sendUser(name,password)
+    }else{
+      alert('неправильный логин или пароль')
+    }
 }
 
-
-
-
+})
