@@ -36,6 +36,8 @@ class PreparationScene extends Scene {
 		//Прячем вражеское поле
 		document.querySelector('[data-side="opponent"]').hidden = true;
 
+		const loadButton = document.querySelector('[data-action="load_strat"]');
+		const saveButton = document.querySelector('[data-action="save_strat"]');
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const shoresButton = document.querySelector('[data-action="shores"]');
@@ -45,6 +47,9 @@ class PreparationScene extends Scene {
 		const hardButton = document.querySelector('[data-computer="hard"]');
 		const randomButton = document.querySelector('[data-type="random"]');
 
+
+		this.removeEventListeners.push(addListener(loadButton, "click", () => this.load_strat()));
+		this.removeEventListeners.push(addListener(saveButton, "click", () => this.save_strat()));
 		this.removeEventListeners.push(addListener(manuallyButton, "click", () => this.manually()));
 		this.removeEventListeners.push(addListener(randomizeButton, "click", () => this.randomize()));
 		this.removeEventListeners.push(addListener(shoresButton, "click", () => this.shores()));
@@ -138,14 +143,38 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="middle"]').disabled = true;
 			document.querySelector('[data-computer="hard"]').disabled = true;
 			document.querySelector('[data-type="random"]').disabled = true;
-			
+	
 			document.querySelector('[data-computer="difficulty"]').disabled = true;
 		}
 	}
     save_strat(){
-		console.log('кеееек')
-		//const {player} = this.app;
+		console.log('кеееек');
+		let user=JSON.stringify(this.app.player.matrix);
+		let request = new XMLHttpRequest();
+		request.open("POST", "/logos", true);   
+		request.setRequestHeader("Content-Type", "application/json");
+	 request.send(user);
+
 	}
+	load_strat(){
+		const {player} = this.app;
+		console.log('Загрузка.....');
+		let user=JSON.stringify(this.app.player.matrix);
+		let request = new XMLHttpRequest();
+		request.open("POST", "/loados", true);   
+		request.setRequestHeader("Content-Type", "application/json");
+		request.addEventListener("load", function () {
+			
+			let receivedUser = JSON.parse(request.response);
+			console.log(receivedUser);
+			console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd')
+			//this.app.player.matrix=receivedUser.battlefield;
+			//player.update();
+			//Формально, матрица из базы данных передается, но достать я её в BattlefieldView не могу, не присваевает он и всё тут 
+		});
+	 request.send(user);
+	}
+
 	//Случайная расстановка
 	randomize() {
 		const {player} = this.app;
@@ -176,6 +205,7 @@ class PreparationScene extends Scene {
 			const ship = player.ships[i];
 			ship.startX = shipDatas[i].startX;
 			ship.startY = shipDatas[i].startY;
+			//console.log(ship.startX,ship.startY);
 		}
 	}
 

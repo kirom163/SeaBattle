@@ -70,11 +70,38 @@ app.post("/index(.html)?",jsonParser, avs)
 
 app.post("/logos", jsonParser, function (request, response) {
     //response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
-//console.log(this.app.player.battlefield);
-//console.log(this.app);
-//console.log(pm.players[0].battlefield)
 
-})
+//console.log(request.body)
+let part=JSON.stringify(request.body);
+let part1=part.split('"').join("'");
+checkConnect();
+if(correctConnection&&isLogging){
+    Datex=new Date();
+    connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"');",
+    function(err,results,fields){
+        console.log(err,'-error');
+        console.log(results,'results-connection');
+       // console.log(results.length,'-count');
+     
+    })
+    connectionsql.query('select login,time from database1.battlefield;',
+    function(err,results,fields){
+        console.log(err,'-error added');
+        console.log(results,'results-added');
+       // console.log(results.length,'-count');
+      
+    })
+}})
+app.post("/loados", jsonParser, function (request, response) {
+checkConnect();
+if(correctConnection&&isLogging){
+    Datex=new Date();
+    connectionsql.query('select login,time,battlefield from database1.battlefield where login="'+userName+'"',
+    function(err,results,fields){
+        console.log(err,'-error loaded');
+      response.json({login:results[0].login,time:results[0].time,matrixx:results[0].battlefield});
+    })
+}})
 
 
 app.post("/auth", jsonParser, function (request, response) {

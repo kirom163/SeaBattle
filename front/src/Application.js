@@ -11,7 +11,7 @@ class Application {
 	constructor(scenes = {}) {
 		const mouse = new Mouse(document.body);
 		const player = new BattlefieldView(true);
-		const opponent = new BattlefieldView(true);//Здесь поменять на false, чтобы скрыть вражеские корабли
+		const opponent = new BattlefieldView(true);//Здесь поменять на false, чтобы скрыть вражеские корабли, а так они видны
 		const socket = io();
 
 		Object.assign(this, { mouse, player, opponent , socket});
@@ -56,7 +56,7 @@ class Application {
 		if (this.activeScene) {
 			this.activeScene.stop();
 		}
-
+		console.log('application-start-',sceneName);
 		const scene = this.scenes[sceneName];
 		this.activeScene = scene;
 		scene.start(...args);
