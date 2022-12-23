@@ -34,7 +34,7 @@ class Battlefield {
 
 set matrix(matris){
 this.#matrix=matris;
-console.log('Suc CHANGED//////////////////////////////////////////////////////////////',this.#matrix)
+//console.log('Suc CHANGED//////////////////////////////////////////////////////////////',this.#matrix)
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 	get matrix() {
@@ -401,27 +401,40 @@ console.log('Suc CHANGED////////////////////////////////////////////////////////
 	//расстановка из сохранения расстановок
 	randomize1(ShipClass = Ship,shipss) {
 //		this.removeAllShips();
-
 //let ship1=shipss;
-
 this.removeAllShips();
-		
-console.log('some ships-',shipss);
+//console.log('some ships-',shipss);
 			for (const ship of shipss) {
-				console.log("try to load ship ",ship);
+			//	console.log("try to load ship ",ship);
 				const direction = ship.direction;
 				const shipx = new ShipClass(ship.size, direction);
-
-				
 					const x = ship.x;                   // getRandomBetween(0, 9);
 					const y = ship.y;
-
 					this.removeShip(shipx);
 					this.addShip(shipx, x, y);
-			
 			}
 		
 	}
+	randomize2(ShipClass = Ship,shipss,shotss) {
+		//		this.removeAllShips();
+		//let ship1=shipss;
+		this.removeAllShips();
+		//console.log('some ships-',shipss);
+					for (const ship of shipss) {
+					//	console.log("try to load ship ",ship);
+						const direction = ship.direction;
+						const shipx = new ShipClass(ship.size, direction);
+							const x = ship.x;                   // getRandomBetween(0, 9);
+							const y = ship.y;
+							this.removeShip(shipx);
+							this.addShip(shipx, x, y);
+					}
+					for (const shoter of shotss){
+						const shot = new ShotView(shoter.x,shoter.y);
+						const result = this.addShot(shot);
+					}
+				
+			}
 	//Расстановка "Берега"
 	shores(ShipClass = Ship) {
 		let tres=true;

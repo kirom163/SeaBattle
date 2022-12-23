@@ -41,7 +41,7 @@
 								</a>
 							</div>
 						</div>
-						<button class="app-action" data-load disabled>Загрузить игру</button>
+						<button class="app-action" data-type="load_battle"  {{#if isLogging}} {{else}}disabled{{/if}}>Загрузить игру</button>
 						<p class="app-menu-text">Сетевая игра</p>
 						<button class="app-action" data-type="random" disabled>
 							случайный матч
@@ -53,8 +53,8 @@
 						<div class="dropdown">
 							<button onclick="dropPlacement()" class="app-action" data-computer="difficulty">Выбрать расстановку</button>
 							<div id="DropdownPlacement" class="dropdown-content">
-							<button class="app-action1" data-action="save_strat" id="saving">Сохранить расстановку</button>
-							<button  class="app-action1" data-action="load_strat" >Загрузить расстановку</button>
+							<button class="app-action1" data-type="save_strat" id="saving" disabled>Сохранить расстановку</button>
+							<button  class="app-action1" data-type="load_strat" disabled>Загрузить расстановку</button>
 								<a  data-action="manually">
 									Сбросить расстановку 
 								</a>
@@ -81,6 +81,7 @@
 					</div>
 					<div class="app-actions hidden" data-scene="computer">
 						<div class="battlefield-status">Ваш ход</div>
+						<button class="app-action" data-action="saveup">Сохранить и выйти</button>
 						<button class="app-action" data-action="giveup">Сдаться</button>
 						<button class="app-action" data-action="newgame">Новая игра</button>
 					</div>

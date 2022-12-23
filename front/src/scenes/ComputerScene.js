@@ -20,8 +20,8 @@ class ComputerScene extends Scene {
 		this.status = document.querySelector(".battlefield-status");
 	}
 
-    start(untouchables, strategy) {
-		const {opponent} = this.app;
+    start(untouchables, strategy,saving,ships_ai,shots_ai,ships_pl,shots_pl) {
+		const {opponent,player} = this.app;
 		//Убираем лишний текст
 		document.querySelectorAll('.app-menu-text').forEach(element => element.classList.add('hidden'));
 		//Убираем лишние элементы
@@ -34,9 +34,21 @@ class ComputerScene extends Scene {
 			.classList.remove("hidden");
 		//Показываем вражеское поле
 		document.querySelector('[data-side="opponent"]').hidden = false;
-		opponent.clear();
-		opponent.randomize(ShipView);
 
+		if(!saving){
+		opponent.clear();
+		opponent.randomize(ShipView);///////////////////////////////////////то, что надо сохранять
+		}else{
+			opponent.clear();
+			opponent.randomize2(ShipView,ships_ai,shots_ai);
+
+			player.clear();
+			player.randomize2(ShipView,ships_pl,shots_pl);
+		}
+	//	player.clear();
+	//	player.randomize(ShipView);///////////////////////////////////////то, что надо сохранять
+//РАБОТАЕТ
+		console.log('vie untocuh',untouchables)
 		this.untouchables = untouchables;
 		this.strategy = strategy;
 		console.log('strategy ', strategy);
@@ -44,11 +56,38 @@ class ComputerScene extends Scene {
 
 		const giveupButton = document.querySelector('[data-action="giveup"]');
 		giveupButton.classList.remove("hidden");
+		const saveupButton = document.querySelector('[data-action="saveup"]');
+		saveupButton.classList.remove("hidden");
 		const newgameButton = document.querySelector('[data-action="newgame"]');
 		newgameButton.classList.add("hidden");
 
 		this.removeEventListeners.push(addListener(giveupButton, 'click', () => {
 			this.app.start("preparation");
+		}));
+		this.removeEventListeners.push(addListener(saveupButton, 'click', () => {
+			//player, opponent, существуют
+
+ let user=JSON.stringify({rang_ai:strategy,ships_ai:opponent.ships,shots_ai:opponent.shots,ships_pl:player.ships,shots_pl:player.shots});
+ //console.log('user',user);
+    
+    let request = new XMLHttpRequest();
+    //console.log(userName,userPassword);
+    request.open("POST", "/save_battle", true);   
+    request.setRequestHeader("Content-Type", "application/json");
+    request.addEventListener("load", function () {
+   // console.log(request);
+   // console.log(request.response)
+ 
+
+    //let receivedUser = JSON.parse(request.response);
+    //console.log(receivedUser);
+      }) 
+ request.send(user);
+
+
+
+////это должно идти после всего
+		//	this.app.start("preparation");
 		}));
 		this.removeEventListeners.push(addListener(newgameButton, 'click', () => {
 			this.app.start("preparation");
@@ -113,6 +152,7 @@ class ComputerScene extends Scene {
 			}
 
 			document.querySelector('[data-action="giveup"]').classList.add("hidden");
+			document.querySelector('[data-action="saveup"]').classList.add("hidden");
 			document.querySelector('[data-action="newgame"]').classList.remove("hidden");
 			return;
 		} 

@@ -73,18 +73,17 @@ app.post("/logos", jsonParser, function (request, response) {
 let part=JSON.stringify(request.body.ships);
 let cart=JSON.stringify(request.body.shots);
 let bart=JSON.stringify(request.body.matrix);
-//let part1=part.split('"').join("'");
+
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
     connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"','"+bart+"');",
     function(err,results,fields){
        console.log(err,'-error');
-     //   console.log(results,'results-connection');
-       // console.log(results.length,'-count');
-     
+    
     })
 }})
+
 app.post("/loados", jsonParser, function (request, response) {
 checkConnect();
 if(correctConnection&&isLogging){
@@ -103,6 +102,40 @@ if(correctConnection&&isLogging){
 }})
 
 
+app.post("/save_battle", jsonParser, function (request, response) {
+   
+    let rang_ai=JSON.stringify(request.body.rang_ai);
+    let ships_ai=JSON.stringify(request.body.ships_ai);
+    let shots_ai=JSON.stringify(request.body.shots_ai);
+    let ships_pl=JSON.stringify(request.body.ships_pl);
+    let shots_pl=JSON.stringify(request.body.shots_pl);
+   
+    checkConnect();
+    if(correctConnection&&isLogging){
+        Datex=new Date();
+        connectionsql.query('insert into database1.ai_battlefield values ("'+userName+'","'+Datex+'",'+"'"+rang_ai+"','"+ships_ai+"','"+shots_ai+"','"+ships_pl+"','"+shots_pl+"');",
+        function(err,results,fields){
+           console.log(err,'-error');
+         
+         
+        })
+    }})
+  app.post("/load_battle", jsonParser, function (request, response) {
+        checkConnect();
+        if(correctConnection&&isLogging){
+            Datex=new Date();
+            connectionsql.query('select * from database1.ai_battlefield where login_ai="'+userName+'"',
+            function(err,results,fields){
+                console.log(err,'-error loaded');
+              //  console.log('loading ships',results[0].ships);
+        
+        
+                //let a=results[0].ships;
+                //console.log('loading ships a',results[0].ships);
+                response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
+            })
+            console.log("werify");
+        }})
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
 let countUserx=-1;

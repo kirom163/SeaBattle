@@ -36,8 +36,8 @@ class PreparationScene extends Scene {
 		//Прячем вражеское поле
 		document.querySelector('[data-side="opponent"]').hidden = true;
 
-		const loadButton = document.querySelector('[data-action="load_strat"]');
-		const saveButton = document.querySelector('[data-action="save_strat"]');
+		const loadButton = document.querySelector('[data-type="load_strat"]');
+		const saveButton = document.querySelector('[data-type="save_strat"]');
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const shoresButton = document.querySelector('[data-action="shores"]');
@@ -46,6 +46,7 @@ class PreparationScene extends Scene {
 		const middleButton = document.querySelector('[data-computer="middle"]');
 		const hardButton = document.querySelector('[data-computer="hard"]');
 		const randomButton = document.querySelector('[data-type="random"]');
+		const loadBatButton = document.querySelector('[data-type="load_battle"]');
 
 
 		this.removeEventListeners.push(addListener(loadButton, "click", () => this.load_strat()));
@@ -58,7 +59,7 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(middleButton, "click", () => this.startComputer("middle")));
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
 		this.removeEventListeners.push(addListener(randomButton, "click", () => this.app.start("online", "random")));
-		
+		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.startComputerSave()));
 	}
 
 	stop() {
@@ -134,17 +135,21 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="middle"]').disabled = false;
 			document.querySelector('[data-computer="hard"]').disabled = false;
 			document.querySelector('[data-type="random"]').disabled = false;
-
 			document.querySelector('[data-computer="difficulty"]').disabled = false;
-            
+           
+			document.querySelector('[data-type="save_strat"]').disabled = false;
+	//		document.querySelector('[data-type="load_strat"]').disabled = false;
+	//		document.querySelector('[data-type="load_battle"]').disabled = false;
 		}
 		else {
 			document.querySelector('[data-computer="simple"]').disabled = true;
 			document.querySelector('[data-computer="middle"]').disabled = true;
 			document.querySelector('[data-computer="hard"]').disabled = true;
 			document.querySelector('[data-type="random"]').disabled = true;
-	
 			document.querySelector('[data-computer="difficulty"]').disabled = true;
+			document.querySelector('[data-type="save_strat"]').disabled = true;
+	//		document.querySelector('[data-type="load_strat"]').disabled = true;
+	//		document.querySelector('[data-type="load_battle"]').disabled = true;
 		}
 	}
     save_strat(){
@@ -169,13 +174,13 @@ class PreparationScene extends Scene {
 			
 			let receivedUser = JSON.parse(request.response);
 			
-			console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
+		//	console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
 		
 			player.shots=receivedUser.shots;
 			player.matrix=receivedUser.battlefield;
 			
-			console.log('ships------',player.shots);
-			console.log('received-',receivedUser.ships)
+		//	console.log('ships------',player.shots);
+		//	console.log('received-',receivedUser.ships)
 			player.randomize1(ShipView,receivedUser.ships); //не работает
 	
 		});
@@ -229,7 +234,9 @@ class PreparationScene extends Scene {
 
 	startComputer(level) {
 		const matrix = this.app.player.matrix;
-		const withoutShipItems = matrix.flat().filter((item) => !item.ship);
+		console.log('verk-',matrix.flat().filter((item) => item.ship));
+		const withoutShipItems = matrix.flat().filter((item) => item.ship);
+		
 		let untouchables = [];
 		let strategy = 0;
 		if (level === "simple") {
@@ -242,7 +249,44 @@ class PreparationScene extends Scene {
 			untouchables = getRandomSeveral(withoutShipItems, 0);
 		}
 
-		this.app.start("computer", untouchables, strategy);
+		let ships_ai,shots_ai,ships_pl,shots_pl=null;
+		this.app.start("computer", untouchables, strategy,false,ships_ai,shots_ai,ships_pl,shots_pl);
 	}
+	startComputerSave() {
+		const matrix = this.app.player.matrix;
+		console.log('verk-',matrix.flat().filter((item) => item.ship));
+		const withoutShipItems = matrix.flat().filter((item) => item.ship);
+		
+		let untouchables = [];
+		let strategy = 0;
+		if (true) {
+			strategy = 1;
+		} 
+
+		let user=JSON.stringify({awaiter:0});
+    
+		
+    let request = new XMLHttpRequest();
+    //console.log(userName,userPassword);
+	//console.log('vex',this);
+	const apper=this.app;
+    request.open("POST", "/load_battle", true);   
+    request.setRequestHeader("Content-Type", "application/json");
+    request.addEventListener("load", function () {
+		let ships_ai,shots_ai,ships_pl,shots_pl;
+		let rang_ai;
+
+		let receivedUser = JSON.parse(request.response);
+   // console.log(request);
+    //console.log(request.response)
+    
+   
+	apper.start("computer", untouchables, receivedUser.rang_ai,true,receivedUser.ships_ai,receivedUser.shots_ai,receivedUser.ships_pl,receivedUser.shots_pl);
+      }) 
+ request.send(user);
+		
+	}
+	
+	
 
 }
