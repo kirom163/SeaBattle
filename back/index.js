@@ -72,12 +72,12 @@ app.post("/logos", jsonParser, function (request, response) {
    
 let part=JSON.stringify(request.body.ships);
 let cart=JSON.stringify(request.body.shots);
-let bart=JSON.stringify(request.body.matrix);
+//let bart=JSON.stringify(request.body.matrix);
 
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
-    connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"','"+bart+"');",
+    connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"');",
     function(err,results,fields){
        console.log(err,'-error');
     
@@ -88,7 +88,7 @@ app.post("/loados", jsonParser, function (request, response) {
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
-    connectionsql.query('select login,time,ships,shots,battlefield from database1.battlefield where login="'+userName+'"',
+    connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'"',
     function(err,results,fields){
         console.log(err,'-error loaded');
         console.log('loading ships',results[0].ships);
@@ -96,7 +96,7 @@ if(correctConnection&&isLogging){
 
         let a=results[0].ships;
         console.log('loading ships a',results[0].ships);
-        response.json({login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots,battlefield:results[0].battlefield});
+        response.json({login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
     })
     console.log("werify");
 }})
