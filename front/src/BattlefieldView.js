@@ -24,7 +24,7 @@ class BattlefieldView extends Battlefield {
 
 		Object.assign(this, { root, table, dock, polygon, showShips });
 		root.append(table, dock, polygon);
-
+		//ЗДЕСЬ СКОЕЕЕ ВСЕГО НАДО ОБНОВЛЯТЬ МАТРИКС КОТОРЫЙ ОБНОВЛЯЕТСЯ В ЛОГИЧЕСКОЙ ЧАСТИ
 		for (let y = 0; y < 10; y++) {
 			const row = [];
 			const tr = document.createElement("tr");
@@ -78,6 +78,31 @@ class BattlefieldView extends Battlefield {
 			this.dock.append(ship.div);
 
 			if (ship.placed) {
+				const cell = this.cells[y][x];
+				const cellRect = cell.getBoundingClientRect();
+				const rootRect = this.root.getBoundingClientRect();
+
+
+				ship.div.style.left = `${cellRect.left - rootRect.left}px`;
+				ship.div.style.top = `${cellRect.top - rootRect.top}px`;
+			} else {
+				ship.setDirection("row");
+				ship.div.style.left = `${ship.startX}px`;
+				ship.div.style.top = `${ship.startY}px`;
+			}
+		}
+
+		return true;
+	}
+	addShipx(ship, x, y) {
+		if (!super.addShip(ship, x, y)) {
+			return false;
+		}
+
+		if (this.showShips) {
+			this.dock.append(ship.div);
+
+			if (!ship.placed) {
 				const cell = this.cells[y][x];
 				const cellRect = cell.getBoundingClientRect();
 				const rootRect = this.root.getBoundingClientRect();

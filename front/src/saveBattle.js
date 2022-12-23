@@ -12,7 +12,7 @@ function sendUser(){
     //let receivedUser = JSON.parse(request.response);
     //console.log(receivedUser);
       }) 
- request.send(user);
+ //request.send(user);
 }
 
 

@@ -149,10 +149,12 @@ class PreparationScene extends Scene {
 	}
     save_strat(){
 		console.log('кеееек');
-		let user=JSON.stringify(this.app.player.matrix);
+		let user=JSON.stringify({ships:this.app.player.ships,shots:this.app.player.shots,matrix:this.app.player.matrix});
 		let request = new XMLHttpRequest();
 		request.open("POST", "/logos", true);   
 		request.setRequestHeader("Content-Type", "application/json");
+		console.log('hehehehe',this.app.player);
+		
 	 request.send(user);
 
 	}
@@ -166,11 +168,16 @@ class PreparationScene extends Scene {
 		request.addEventListener("load", function () {
 			
 			let receivedUser = JSON.parse(request.response);
-			console.log(receivedUser);
-			console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd')
-			//this.app.player.matrix=receivedUser.battlefield;
-			//player.update();
-			//Формально, матрица из базы данных передается, но достать я её в BattlefieldView не могу, не присваевает он и всё тут 
+			
+			console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
+		
+			player.shots=receivedUser.shots;
+			player.matrix=receivedUser.battlefield;
+			
+			console.log('ships------',player.shots);
+			console.log('received-',receivedUser.ships)
+			player.randomize1(ShipView,receivedUser.ships); //не работает
+	
 		});
 	 request.send(user);
 	}

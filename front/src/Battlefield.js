@@ -2,7 +2,7 @@ class Battlefield {
 	ships = [];
 	shots = [];
 	diagonal = 0;//Для диагоналей (тест)
-	#matrix = null;
+    #matrix = null;
 	#changed = true;
 
 	get loser() {
@@ -31,6 +31,12 @@ class Battlefield {
 		console.log(this.#matrix)
 		console.log(JSON.stringify(this.#matrix));
 	}
+
+set matrix(matris){
+this.#matrix=matris;
+console.log('Suc CHANGED//////////////////////////////////////////////////////////////',this.#matrix)
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
 	get matrix() {
 		if (!this.#changed) {
 			return this.#matrix;
@@ -390,6 +396,31 @@ class Battlefield {
 				}
 			}
 		}
+	}
+	
+	//расстановка из сохранения расстановок
+	randomize1(ShipClass = Ship,shipss) {
+//		this.removeAllShips();
+
+//let ship1=shipss;
+
+this.removeAllShips();
+		
+console.log('some ships-',shipss);
+			for (const ship of shipss) {
+				console.log("try to load ship ",ship);
+				const direction = ship.direction;
+				const shipx = new ShipClass(ship.size, direction);
+
+				
+					const x = ship.x;                   // getRandomBetween(0, 9);
+					const y = ship.y;
+
+					this.removeShip(shipx);
+					this.addShip(shipx, x, y);
+			
+			}
+		
 	}
 	//Расстановка "Берега"
 	shores(ShipClass = Ship) {

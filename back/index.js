@@ -69,45 +69,44 @@ app.get("/",jsonParser, avs);
 app.post("/index(.html)?",jsonParser, avs)
 
 app.post("/logos", jsonParser, function (request, response) {
-    //response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection})
-
-//console.log(request.body)
-let part=JSON.stringify(request.body);
-let part1=part.split('"').join("'");
+   
+let part=JSON.stringify(request.body.ships);
+let cart=JSON.stringify(request.body.shots);
+let bart=JSON.stringify(request.body.matrix);
+//let part1=part.split('"').join("'");
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
-    connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"');",
+    connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"','"+bart+"');",
     function(err,results,fields){
-        console.log(err,'-error');
-        console.log(results,'results-connection');
+       console.log(err,'-error');
+     //   console.log(results,'results-connection');
        // console.log(results.length,'-count');
      
-    })
-    connectionsql.query('select login,time from database1.battlefield;',
-    function(err,results,fields){
-        console.log(err,'-error added');
-        console.log(results,'results-added');
-       // console.log(results.length,'-count');
-      
     })
 }})
 app.post("/loados", jsonParser, function (request, response) {
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
-    connectionsql.query('select login,time,battlefield from database1.battlefield where login="'+userName+'"',
+    connectionsql.query('select login,time,ships,shots,battlefield from database1.battlefield where login="'+userName+'"',
     function(err,results,fields){
         console.log(err,'-error loaded');
-      response.json({login:results[0].login,time:results[0].time,matrixx:results[0].battlefield});
+        console.log('loading ships',results[0].ships);
+
+
+        let a=results[0].ships;
+        console.log('loading ships a',results[0].ships);
+        response.json({login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots,battlefield:results[0].battlefield});
     })
+    console.log("werify");
 }})
 
 
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
 let countUserx=-1;
-console.log('-----s---',request.body);
+//console.log('-----s---',request.body);
 let user=request.body.user;
 let password=request.body.password;
 console.log(user,password);
@@ -117,8 +116,8 @@ if(correctConnection){
     connectionsql.query('select * from database1.logins where logins.login="'+user+'"',
     function(err,results,fields){
         console.log(err,'-error');
-        console.log(results,'results-connection');
-        console.log(results.length,'-count');
+     //   console.log(results,'results-connection');
+      //  console.log(results.length,'-count');
         countUserx=results.length;
    if(countUserx===1)   {console.log(results[0].login,'-login')
         if (results[0].login===user&&results[0].password===password){
