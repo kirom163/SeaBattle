@@ -26,3 +26,10 @@ document.querySelectorAll(".loadx").forEach(i=>i.addEventListener("click",event=
     console.log(event.target.id);
     sendUser(event.target.id)
 }))
+
+
+
+document.getElementById("exec").onclick=function(){
+  console.log('try to load')
+  window.location.href="/index";
+}
