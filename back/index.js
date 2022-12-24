@@ -32,6 +32,8 @@ checkConnect(correctConnection);
 console.log(correctConnection);
 let userName='nf';
 let isLogging=false;
+let rasst=[];
+let isRas=false;
 
 
 //создание приложения экспресс
@@ -84,22 +86,79 @@ if(correctConnection&&isLogging){
     })
 }})
 
-app.post("/loados", jsonParser, function (request, response) {
+app.get("/loados", jsonParser, function (request, response) {
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
-    connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'"',
+    connectionsql.query('select time from database1.battlefield where login="'+userName+'"',
     function(err,results,fields){
-        console.log(err,'-error loaded');
-        console.log('loading ships',results[0].ships);
+        console.log(err,'-error date');
+      // console.log('loading date',results[0].ships);
 
-
-        let a=results[0].ships;
-        console.log('loading ships a',results[0].ships);
-        response.json({login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
+//console.log(results);
+       // let a=results[0].ships;
+        //console.log('loading ships a',results[0].ships);
+        response.render('load_strat.hbs',{date:results,userName:userName,isLogging:isLogging});
     })
-    console.log("werify");
+    
 }})
+
+
+app.post("/loados_y", jsonParser, function (request, response) {
+    checkConnect();
+    if(correctConnection&&isLogging){
+        Datex=new Date();
+        connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'" and time="'+request.body.date+'"',
+        function(err,results,fields){
+            console.log(err,'-error loaded');
+            console.log('loading ships',results[0].ships);
+    
+    
+rasst=results[0];
+isRas=true;
+            let a=results[0].ships;
+            console.log('loading ships a');
+            response.render('index',{login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
+        })
+        
+    }})
+app.post("/loados_x", jsonParser, function (request, response) {
+    checkConnect();
+    if(correctConnection&&isLogging&&isRas){
+        Datex=new Date();
+        connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'" and time="'+request.body.date+'"',
+        function(err,results,fields){
+            console.log(err,'-error loaded');
+            console.log('loading ships',results[0].ships);
+    
+    
+rasst=results[0];
+isRas=true;
+            let a=results[0].ships;
+            console.log('loading ships a');
+            response.render('index',{login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
+        })
+        
+    }})
+    app.get("/loados_x", jsonParser, function (request, response) {
+        checkConnect();
+        if(correctConnection&&isLogging&&isRas){
+          //  Datex=new Date();
+        //    connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'" and time="'+request.body.date+'"',
+          //  function(err,results,fields){
+            //    console.log(err,'-error loaded');
+              //  console.log('loading ships',results[0].ships);
+                //let a=results[0].ships;
+                //console.log('loading ships a',results[0].ships);
+                console.log('try to rast');
+                response.json({isRas:true,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
+            }else{
+                response.json({isRas:false});
+            }
+        }
+            )
+            
+        
 
 
 app.post("/save_battle", jsonParser, function (request, response) {
@@ -130,6 +189,7 @@ app.post("/save_battle", jsonParser, function (request, response) {
               //  console.log('loading ships',results[0].ships);
         
         
+
                 //let a=results[0].ships;
                 //console.log('loading ships a',results[0].ships);
                 response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});

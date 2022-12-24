@@ -135,7 +135,25 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 }
-
+.saver{
+	display: block;
+	width: 600px;
+	height: 500px;
+	border: 2px solid black;
+	position: relative;
+	left:34%;
+	text-align: center;
+}
+.delx{
+	font-size: 30px;
+}
+.one-save{
+	
+	border: 2px solid black;
+}
+.one-save button{
+	display: inline;
+}
 .app-action {
 	width: 210px;
 	padding: 10px;

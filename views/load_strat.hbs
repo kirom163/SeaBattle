@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sea Battle</title>
+		<link rel="stylesheet" href="src/style.css" />
+		<link rel="stylesheet" href="src/drop.css"/>
+		<link rel="stylesheet" href="src/auth.css"/>
+	</head>
+    <body>
+		<div class="app">
+			<div class="app-header">
+				<h1 class="app-title">Морской бой</h1>
+				<span class="app-subtitle"
+					>Проект: 
+					<a href="https://github.com/kirom163/SeaBattle" class="app-link" target="_blank">SeaBattle</a></span>
+				<p class="app-subtitle"><span data-playerCount>0</span> игроков онлайн</p>
+			 {{#if isLogging}}
+					<p class="app-subtitle">Вы вошли как: <mark><b>{{userName}}</b></mark></p>
+						{{/if}}
+			</div>
+		</div>
+		
+		<div class="saver" >
+            <h2>Загрузка расстановки</h2>
+            <button class="delx" type="submit" action="/index">Отмена</button>
+            <div class="saves">
+                {{#each date}}
+                <div class="one-save">
+                    <p>{{time}}</p>
+                    <button class="loadx" type="submit" id="{{time}}">Загрузить</button>
+                </div>
+
+
+
+{{/each}}
+            </div>
+			
+			
+	</form>
+		
+		<script type="module" src="src/loadStrat.js"></script>
+        
+		</body>
+		</html>

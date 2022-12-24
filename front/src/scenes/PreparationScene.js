@@ -60,6 +60,31 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
 		this.removeEventListeners.push(addListener(randomButton, "click", () => this.app.start("online", "random")));
 		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.startComputerSave()));
+		//const {player} = this.app;
+		console.log('Загрузка.....');
+		let user=JSON.stringify(this.app.player.matrix);
+		let request = new XMLHttpRequest();
+		request.open("GET", "/loados_x", true);   
+		request.setRequestHeader("Content-Type", "application/json");
+		request.addEventListener("load", function () {
+			console.log('valor',request.response)
+			let receivedUser = JSON.parse(request.response);
+			if(receivedUser.isRas){
+			
+			if(receivedUser)
+			console.log('xccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
+		
+			player.shots=receivedUser.shots;
+			player.matrix=receivedUser.battlefield;
+			
+		//	console.log('ships------',player.shots);
+		//	console.log('received-',receivedUser.ships)
+			player.randomize1(ShipView,receivedUser.ships); //не работает
+	
+			}
+		});
+	 request.send(user);
+		
 	}
 
 	stop() {
@@ -168,7 +193,34 @@ class PreparationScene extends Scene {
 		console.log('Загрузка.....');
 		let user=JSON.stringify(this.app.player.matrix);
 		let request = new XMLHttpRequest();
-		request.open("POST", "/loados", true);   
+		request.open("GET", "/loados", true);   
+		request.setRequestHeader("Content-Type", "application/json");
+	//	request.addEventListener("load", function () {
+			
+			//let receivedUser = JSON.parse(request.response);
+			
+		//	console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
+		
+			//player.shots=receivedUser.shots;
+			//player.matrix=receivedUser.battlefield;
+			
+		//	console.log('ships------',player.shots);
+		//	console.log('received-',receivedUser.ships)
+			//player.randomize1(ShipView,receivedUser.ships); //не работает
+	
+
+	//	});
+	 request.send(user);
+	}
+
+
+/*
+load_strat(){
+		const {player} = this.app;
+		console.log('Загрузка.....');
+		let user=JSON.stringify(this.app.player.matrix);
+		let request = new XMLHttpRequest();
+		request.open("POST", "/loados_x", true);   
 		request.setRequestHeader("Content-Type", "application/json");
 		request.addEventListener("load", function () {
 			
@@ -186,6 +238,9 @@ class PreparationScene extends Scene {
 		});
 	 request.send(user);
 	}
+*/
+
+
 
 	//Случайная расстановка
 	randomize() {
