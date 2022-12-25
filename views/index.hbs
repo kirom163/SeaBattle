@@ -81,7 +81,7 @@
 					</div>
 					<div class="app-actions hidden" data-scene="computer">
 						<div class="battlefield-status">Ваш ход</div>
-						<button class="app-action" data-action="saveup">Сохранить и выйти</button>
+						<button class="app-action" data-action="saveup" {{#if isLogging}} {{else}}disabled{{/if}}>Сохранить и выйти</button>
 						<button class="app-action" data-action="giveup">Сдаться</button>
 						<button class="app-action" data-action="newgame">Новая игра</button>
 					</div>
