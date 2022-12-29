@@ -8,12 +8,17 @@ const hbs=require('hbs');
 
 const mysql = require("mysql2");
 const { query } = require('express');
-const connectionsql = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "database1",
-    password: "1111"
-  });
+let connectionsql;
+  
+  function createConnection(){
+    connectionsql = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        database: "database1",
+        password: "1111"
+      });
+
+  }
   let correctConnection=false;
   function checkConnect(){
     connectionsql.connect(function(err){
@@ -42,7 +47,7 @@ hbs.registerHelper('compare',function(value){
     })
 
 
-
+createConnection();
 console.log(correctConnection)
 checkConnect(correctConnection);
 console.log(correctConnection);
@@ -115,25 +120,35 @@ if(correctConnection&&isLogging){
     function(err,results,fields){
        console.log(err,'-error_logos_save_strat?');
     
+       response.json({correctConnection:correctConnection})
     })
-}})
+}else{
+    //HEHE
+    if(!correctConnection){
+        response.json({correctConnection:correctConnection});
+    }
+    //
+}
+})
 
-app.get("/loados", jsonParser, function (request, response) {
+app.get("/loados(.hbs)?", jsonParser, function (request, response) {
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
     connectionsql.query('select time from database1.battlefield where login="'+userName+'"',
     function(err,results,fields){
         console.log(err,'-error date');
-      // console.log('loading date',results[0].ships);
-
-//console.log(results);
-       // let a=results[0].ships;
-        //console.log('loading ships a',results[0].ships);
-        response.render('load_strat.hbs',{date:results,userName:userName,isLogging:isLogging});
+        response.render('loados.hbs',{date:results,userName:userName,isLogging:isLogging});
     })
     
-}})
+}else{
+ //HEHE
+    if(!correctConnection){
+        response.render('loados.hbs',{correctConnection:correctConnection});
+    }
+    //
+}
+})
 
 
 app.post("/loados_y", jsonParser, function (request, response) {
@@ -150,10 +165,17 @@ rasst=results[0];
 isRas=true;
             let a=results[0].ships;
             console.log('loading ships a');
-            response.render('index',{login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
+            response.render('index',{correctConnection:correctConnection,login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
         })
         
-    }})
+    }else{
+         //HEHE
+    if(!correctConnection){
+        response.json({correctConnection:correctConnection});
+    }
+    //
+    }
+})
 app.post("/loados_x", jsonParser, function (request, response) {
     checkConnect();
     if(correctConnection&&isLogging&&isRas){
@@ -168,10 +190,18 @@ rasst=results[0];
 isRas=true;
             let a=results[0].ships;
             console.log('loading ships a');
-            response.render('index',{login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
+            response.render('index',{correctConnection:correctConnection,login:results[0].login,time:results[0].time,ships:a,shots:results[0].shots});
         })
         
-    }})
+    }else{
+         //HEHE
+    if(!correctConnection){
+        console.log('non correct at loados_x')
+        response.json({correctConnection:correctConnection});
+    }
+    //
+    }
+})
 
     app.get('/help',jsonParser,function(request,response){
 
@@ -188,10 +218,10 @@ isRas=true;
         let fg=isRas;
         if(correctConnection&&isLogging&&isRas){        
                 console.log('try to rast');
-                response.json({isRas:fg,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
+                response.json({correctConnection:correctConnection,isRas:fg,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
                 isRas=false;
             }else{
-                response.json({isRas:false});
+                response.json({correctConnection:correctConnection,isRas:false});
 }})
 app.post("/save_battle", jsonParser, function (request, response) {
     let rang_ai=JSON.stringify(request.body.rang_ai);
@@ -206,10 +236,18 @@ app.post("/save_battle", jsonParser, function (request, response) {
         connectionsql.query('insert into database1.ai_battlefield values ("'+userName+'","'+Datex+'",'+"'"+rang_ai+"','"+ships_ai+"','"+shots_ai+"','"+ships_pl+"','"+shots_pl+"');",
         function(err,results,fields){
            console.log(err,'_save_battle_server?');
-         response.json({awaiter:0});
+         response.json({correctConnection:correctConnection});
          
         })
-    }})
+    }else{
+         //HEHE
+    if(!correctConnection){
+        console.log('non correct at save_battle');
+        response.json({correctConnection:correctConnection});
+    }
+    //
+    }
+})
     app.post("/load_battle_ai", jsonParser, function (request, response) {
         checkConnect();
         if(correctConnection&&isLogging){
@@ -220,13 +258,20 @@ app.post("/save_battle", jsonParser, function (request, response) {
             dateL=date;
             connectionsql.query('select * from database1.ai_battlefield where login_ai="'+userName+'" and time_ai='+dateL+'',
             function(err,results,fields){
-                console.log(err,'-error loaded');
+                console.log(err,'-error loaded battle ai');
                 console.log('result in load battle server_ai')
-                response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
+                response.json({correctConnection:correctConnection,login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
             })
 
 
-        }})
+        }else{
+             //HEHE
+    if(!correctConnection){
+        response.json({correctConnection:correctConnection});
+    }
+    //
+        }
+    })
   app.post("/load_battle", jsonParser, function (request, response) {
         checkConnect();
         if(correctConnection&&isLogging){
@@ -236,10 +281,17 @@ app.post("/save_battle", jsonParser, function (request, response) {
             function(err,results,fields){
                 console.log(err,'-error loaded');
                 console.log('result in load battle server',results)
-                response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
+                response.json({correctConnection:correctConnection,login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
             })
             console.log("werify");
-        }})
+        }else{
+             //HEHE
+    if(!correctConnection){
+        response.json({correctConnection:correctConnection});
+    }
+    //
+        }
+    })
 
 
         app.post("/load_menu_battle", jsonParser, function (request, response) {
@@ -254,11 +306,19 @@ app.post("/save_battle", jsonParser, function (request, response) {
                     isMenuLoadBattle=true;
                     somemenu=results;
                    console.log('some try/-')
-                    response.json({time_op:results,isMenuLoadBattle:isMenuLoadBattle});
+                    response.json({correctConnection:correctConnection,time_op:results,isMenuLoadBattle:isMenuLoadBattle});
                   //  isMenuLoadBattle=false;
                 })
                 console.log("/load_menu_battle");
-            }})
+            }else{
+                 //HEHE
+    if(!correctConnection){
+        console.log('non correct at load_menu_battle')
+        response.json({correctConnection:correctConnection});
+    }
+    //
+            }
+        })
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
 let countUserx=-1;
@@ -347,7 +407,14 @@ app.post("/reg", jsonParser, function (request, response) {
         console.log('success reg');
         response.json({correctUser:correctUserx,countUser:countUserx,correctConnection:correctConnection});
        }
-    })}});
+    })}else{
+         //HEHE
+    if(!correctConnection){
+        response.json({correctConnection:correctConnection});
+    }
+    //
+    }
+});
 app.get("/exit", jsonParser, function (request, response) {
    
     console.log(userName,isLogging,'-метаданные выхода');

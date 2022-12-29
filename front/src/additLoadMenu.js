@@ -14,8 +14,9 @@ document.querySelectorAll(".loadx").forEach(i=>i.addEventListener("click",event=
     let request = new XMLHttpRequest();
     request.open("POST", "/load_battle_ai", true);   
     request.setRequestHeader("Content-Type", "application/json");
-    console.log('wat')
+    console.log('wat in additloadmenu')
     request.addEventListener("load", function () {
+       
 console.log('some actions on loadx');  
 const loadBatButtonNULL = document.querySelector('[data-type="load_battleNULL"]');//загрузка сохраненной битвы
 

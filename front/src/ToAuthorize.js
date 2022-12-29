@@ -12,6 +12,6 @@ document.getElementById("exittt").onclick=function(){
 //if (document.querySelector("#loading_strat")!=null)
 document.getElementById("loading_strat").onclick=function(){
     console.log('try to load')
-    window.location.href="loados";
+    window.location.href="loados.hbs";
 }
 console.log('try to something');

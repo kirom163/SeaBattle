@@ -80,15 +80,17 @@ class ComputerScene extends Scene {
     request.addEventListener("load", function () {
    // console.log(request);
    // console.log(request.response)
+   let receivedUser = JSON.parse(request.response);
+   if(!receivedUser.correctConnection){alert('ошибка:1 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
 alert('сохранение битвы успешно');
 window.location.href='/index';
-
+   }
     //let receivedUser = JSON.parse(request.response);
     //console.log(receivedUser);
       }) 
  request.send(user);
 
-
+	
 
 ////это должно идти после всего
 		//	this.app.start("preparation");

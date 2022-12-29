@@ -4,12 +4,13 @@ function sendUser(id){
     let request = new XMLHttpRequest();
     request.open("POST", "/loados_y", true);   
     request.setRequestHeader("Content-Type", "application/json");
-    console.log('wat')
+    console.log('wat loadstrat loados_y')
     request.addEventListener("load", function () {
+ 
    
 console.log('some actions');  
-window.location.href="/index";  
-      }) 
+window.location.href="/index";  }
+      ) 
  request.send(user);
 }
 function redirect(){//переадресация назад с загруженной расстановкой

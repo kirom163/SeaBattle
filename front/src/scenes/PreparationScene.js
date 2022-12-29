@@ -25,9 +25,11 @@ function allxc(ert){
 		console.log(event.target.id);
 		let userCV=JSON.stringify({date:event.target.id});
 		let requestCV = new XMLHttpRequest();
-		console.log('WHERE MY CHICKEN 0')
+		console.log('WHERE MY CHICKEN 0-200')
 		requestCV.open("POST", "/load_battle_ai", true);   
 		requestCV.setRequestHeader("Content-Type", "application/json");
+	
+		
 		console.log('wat in battle')
 		
 
@@ -48,19 +50,15 @@ function allxc(ert){
 	request.setRequestHeader("Content-Type", "application/json");
 	request.addEventListener("load", function () {
 		let receivedUser = JSON.parse(request.response);
+		console.log('some trouble llllllllllllllllllllllllllllllllll in loadBattle',receivedUser)
+if(!receivedUser.correctConnection){alert('ошибка:3 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
 	apper.start("computer", untouchables, receivedUser.rang_ai,true,receivedUser.ships_ai,receivedUser.shots_ai,receivedUser.ships_pl,receivedUser.shots_pl);
-	  }) 
+	  }
+	}) 
  request.send(user);
-
-
-		requestCV.addEventListener("load", function () {
-//
-console.log('WHERE MY CHICKEN');
-//startComputerSave();
-	//nsole.log('some actions on loadx in prepa',document.body.app);  
-///////////////////////////////////////////////////////////
-/////////////////////////////////////////////
-		})}))}
+	}))
+}
+	
 
 
 class PreparationScene extends Scene {
@@ -131,6 +129,9 @@ class PreparationScene extends Scene {
 		request.open("GET", "/loados_x", true);   
 		request.setRequestHeader("Content-Type", "application/json");
 		request.addEventListener("load", function () {
+			let receivedUser = JSON.parse(request.response);
+			console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwww loados_x', receivedUser)
+   if(!receivedUser.correctConnection){alert('ошибка:4 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
 			console.log('valor',request.response)
 			let receivedUser = JSON.parse(request.response);
 			if(receivedUser.isRas){
@@ -139,7 +140,7 @@ class PreparationScene extends Scene {
 			player.shots=receivedUser.shots;
 			player.matrix=receivedUser.battlefield;
 			player.randomize1(ShipView,receivedUser.ships); //не работает, или работает???????
-	
+			}
 			}
 		});
 	 request.send(user);
@@ -244,11 +245,17 @@ class PreparationScene extends Scene {
 	}
 	load_strat(){
 		const {player} = this.app;
-		console.log('Загрузка.....');
+		console.log('Загрузка..... load_strat');
 		let user=JSON.stringify(this.app.player.matrix);
 		let request = new XMLHttpRequest();
 		request.open("GET", "/loados", true);   
+		console.log('some FFFFFFFFFFFFFFFF trouble in load_strat 0')
 		request.setRequestHeader("Content-Type", "application/json");
+		request.addEventListener("load", function () {
+		let receivedUser = JSON.parse(request.response);
+		console.log('some FFFFFFFFFFFFFFFF trouble in load_strat')
+		if(!receivedUser.correctConnection){alert('ошибка:6 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
+	}})
 
 	 request.send(user);
 	}
@@ -327,53 +334,16 @@ class PreparationScene extends Scene {
     request.open("POST", "/load_menu_battle", true);   
     request.setRequestHeader("Content-Type", "application/json");
 	request.addEventListener("load", function () {
+		let receivedUser = JSON.parse(request.response);
+if(!receivedUser.correctConnection){alert('Ошибка:7 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
 		const requs=JSON.parse(request.response);
 		console.log('requs',requs);
 		if (requs.isMenuLoadBattle){
 			console.log('try to load in client preparation scene load menubatle');
-			
-		//
-		/*/////////////////////////////////////////////необходима прослушка
-			document.querySelectorAll(".loadx").forEach(i=>i.addEventListener("click",event=>{//выбираем все кнопки загрузить и их id
-				console.log(event.target.innerText);
-				console.log(event.target.id);
-				let user=JSON.stringify({date:event.target.id});
-				let request = new XMLHttpRequest();
-				request.open("POST", "/load_battle_ai", true);   
-				request.setRequestHeader("Content-Type", "application/json");
-				console.log('wat in battle')
-				request.addEventListener("load", function () {
-			console.log('some actions on loadx in prepa',document.body.app);  
-			
-//
-//
-///
-//
-//
-//
-//
-//
-//
-//
-//startComputerSave();
-//
-//
-//
-//
-//
-//
-//}) 
-			 request.send(user);
-			
-			// let buttonVX=document.getElementById('loadNULL').submit;
-			//console.log('buttonVX');
-		//	 document.getElementById("crack").remove();
-			})
-			)
-			*/
 		}
 		window.location.href="/index";
-	  }) 
+	  }}
+	  ) 
  request.send(user);
 	}
 
@@ -400,10 +370,13 @@ class PreparationScene extends Scene {
 	const apper=this.app;
     request.open("POST", "/load_battle", true);   
     request.setRequestHeader("Content-Type", "application/json");
-    request.addEventListener("load", function () {
+	request.addEventListener("load", function () {
+		let receivedUser = JSON.parse(request.response);
+if(!receivedUser.correctConnection){alert('ошибка:8 Отсутствует соединение с базой данных, обратитесь к администратору');}else{
 		let receivedUser = JSON.parse(request.response);
 	apper.start("computer", untouchables, receivedUser.rang_ai,true,receivedUser.ships_ai,receivedUser.shots_ai,receivedUser.ships_pl,receivedUser.shots_pl);
-      }) 
+      }}
+	  ) 
  request.send(user);
 		
 	}
