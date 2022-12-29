@@ -21,7 +21,7 @@
 				
 				  {{#if isLogging}}
 					<p class="app-subtitle">Вы вошли как: <mark><b>{{userName}}</b></mark></p>{{/if}}
-					<button type="submit" id="loadNULL" data-type="load_battleNULL" class="specialNULL">x</button>
+					
 			</div>
 			
 			<div class="app-body">
@@ -100,7 +100,15 @@
 						{{else}}
 						<button class="app-action" data-func="authorize" id="authorize">Авторизация</button>
 						{{/if}}
-						<button class="app-action" data-func="help" disabled>Справка</button>
+						<button class="app-action" onclick="dropPlacementX()" data-func="help">Справка</button>
+						<div id="DropdownHelp" class="dropdown-content">
+							<a class="selec" data-action="syst">
+									О системе
+								</a>
+								<a class="selec" data-action="helpings">
+									правила игры
+								</a>
+						</div>
 					</div>
 					<div class="app-actions hidden" data-scene="computer">
 						<div class="battlefield-status">Ваш ход</div>

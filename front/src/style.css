@@ -135,7 +135,11 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 }
+.saver1{
+	overflow-y: scroll;
+}
 .saver{
+	overflow-y: scroll;
 	display: block;
 	width: 600px;
 	height: 500px;
@@ -211,6 +215,26 @@ body {
 .app-action:hover {
 	background-color: #4CAF50;
     color: white;
+}
+.app-action2 {
+	width: 210px;
+	padding: 10px;
+	color: black; 
+    border: 2px solid #4CAF50;
+	border-radius: 4px;
+}
+
+.app-action2:hover {
+	background-color: #4CAF50;
+    color: white;
+}
+
+
+#DropdownHelp{
+	top:555px;
+}
+.selec:hover{
+	background-color: #ddd;
 }
 
 .shot {

@@ -172,27 +172,28 @@ isRas=true;
         })
         
     }})
+
+    app.get('/help',jsonParser,function(request,response){
+
+        response.render('help.hbs',{userName:userName,isLogging:isLogging});
+    })
+    app.get('/syst',jsonParser,function(request,response){
+
+        response.render('syst.hbs',{userName:userName,isLogging:isLogging});
+    })
+        
+    
     app.get("/loados_x", jsonParser, function (request, response) {
         checkConnect();
         let fg=isRas;
-        if(correctConnection&&isLogging&&isRas){
-      
-
-            
+        if(correctConnection&&isLogging&&isRas){        
                 console.log('try to rast');
                 response.json({isRas:fg,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
                 isRas=false;
             }else{
                 response.json({isRas:false});
-            }
-        }
-            )
-            
-        
-
-
+}})
 app.post("/save_battle", jsonParser, function (request, response) {
-   
     let rang_ai=JSON.stringify(request.body.rang_ai);
     let ships_ai=JSON.stringify(request.body.ships_ai);
     let shots_ai=JSON.stringify(request.body.shots_ai);

@@ -107,7 +107,9 @@ class PreparationScene extends Scene {
 		const hardButton = document.querySelector('[data-computer="hard"]');
 		const randomButton = document.querySelector('[data-type="random"]');
 		const loadBatButton = document.querySelector('[data-type="load_battle"]');//загрузка сохраненной битвы
-		const loadBatButtonNULL = document.querySelector('[data-type="load_battleNULL"]');//загрузка сохраненной битвы
+		const helpButton = document.querySelector('[data-action="helpings"]');//справка правила игры
+		const systButton = document.querySelector('[data-action="syst"]');//справка о системе
+		
 
 		this.removeEventListeners.push(addListener(loadButton, "click", () => this.load_strat()));
 		this.removeEventListeners.push(addListener(saveButton, "click", () => this.save_strat()));
@@ -120,7 +122,9 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
 		this.removeEventListeners.push(addListener(randomButton, "click", () => this.app.start("online", "random")));
 		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.loadMenuBattle()));//загрузка сохраненной битвы
-		this.removeEventListeners.push(addListener(loadBatButtonNULL, "click", () => this.startComputerSave()));//загрузка сохраненной битвы
+		this.removeEventListeners.push(addListener(helpButton, "click", () => window.open('help')));//справка правила игры
+		this.removeEventListeners.push(addListener(systButton, "click", () => window.open('syst')));//справка о системе
+		
 		console.log('Загрузка.....');
 		let user=JSON.stringify(this.app.player.matrix);
 		let request = new XMLHttpRequest();

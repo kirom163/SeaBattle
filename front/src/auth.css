@@ -7,7 +7,7 @@
     left:37%;
     
     width: 500px ;
-    height: 367px;
+    min-height: 367px;
     border: 2px solid black;
 }
 .logger input{
@@ -25,6 +25,7 @@
     position: relative;
     offset: 0px ;
     font-size: 30px;
+    margin-bottom:15px;
 }
 .logger h3{
     font-size: 30px;

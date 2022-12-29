@@ -4,6 +4,9 @@ function dropDifficulty() {
   function dropPlacement() {
     document.getElementById("DropdownPlacement").classList.toggle("show");
   }
+  function dropPlacementX() {
+    document.getElementById("DropdownHelp").classList.toggle("show");
+  }
   // Закрытие выпадающего списка по нажатию вне кнопки
   window.onclick = function(event) {
     if (!event.target.matches('.app-action')) {
