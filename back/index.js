@@ -5,7 +5,7 @@ const PartyManager = require('./src/PartyManager');
 const pm = new PartyManager();
 const jsonParser = express.json();
 const hbs=require('hbs');
-
+const fs = require('fs')
 const mysql = require("mysql2");
 const { query } = require('express');
 let connectionsql;
@@ -203,10 +203,25 @@ isRas=true;
     }
 })
 
-    app.get('/help',jsonParser,function(request,response){
+    app.get('/help_pod',jsonParser,function(request,response){
 
-        response.render('help.hbs',{userName:userName,isLogging:isLogging});
+        const path='../views/help.hbs';
+        if (fs.existsSync(path)){
+            response.json({NotFile:false})
+         //   response.render('help.hbs',{NotFile:false,userName:userName,isLogging:isLogging});
+            console.log('true path////////////////////////////////')
+        }
+        else{
+            response.json({NotFile:true})
+            console.log('false path////////////////////////////////')
+        }
     })
+    app.get('/help',jsonParser,function(request,response){
+            response.render('help.hbs',{NotFile:false,userName:userName,isLogging:isLogging});
+    })
+
+
+
     app.get('/syst',jsonParser,function(request,response){
 
         response.render('syst.hbs',{userName:userName,isLogging:isLogging});

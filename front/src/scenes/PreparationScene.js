@@ -120,7 +120,7 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
 		this.removeEventListeners.push(addListener(randomButton, "click", () => this.app.start("online", "random")));
 		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.loadMenuBattle()));//загрузка сохраненной битвы
-		this.removeEventListeners.push(addListener(helpButton, "click", () => window.open('help')));//справка правила игры
+		this.removeEventListeners.push(addListener(helpButton, "click", () => this.entire()));//справка правила игры
 		this.removeEventListeners.push(addListener(systButton, "click", () => window.open('syst')));//справка о системе
 		
 		console.log('Загрузка.....');
@@ -147,6 +147,27 @@ class PreparationScene extends Scene {
 		
 	}
 
+	entire(){
+		
+		let user=JSON.stringify({awaiter:0});
+		let request = new XMLHttpRequest();
+		request.open("GET", "/help_pod", true);   
+		console.log('some FFFFFFFFFFFFFFFF trouble in help 0')
+		request.setRequestHeader("Content-Type", "application/json");
+		request.addEventListener("load", function () {
+			console.log(request.response,'lol')
+			if(request.response!=null){
+		let receivedUser = JSON.parse(request.response);
+		console.log('some FFFFFFFFFFFFFFFF trouble in help')
+		if(receivedUser.NotFile){alert('ошибка:12 Отсутствует файл справки ');}else{
+			window.open('help')
+			
+	}}})
+	 request.send(user);
+
+
+		
+	}
 	stop() {
 		for (const removeEventListener of this.removeEventListeners) {
 			removeEventListener();
