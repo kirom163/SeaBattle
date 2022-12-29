@@ -18,12 +18,35 @@
 					></span
 				>
 				<p class="app-subtitle"><span data-playerCount>0</span> игроков онлайн</p>
+				
 				  {{#if isLogging}}
-					<p class="app-subtitle">Вы вошли как: <mark><b>{{userName}}</b></mark></p>
-						{{/if}}
+					<p class="app-subtitle">Вы вошли как: <mark><b>{{userName}}</b></mark></p>{{/if}}
+					<button type="submit" id="loadNULL" data-type="load_battleNULL" class="specialNULL">x</button>
 			</div>
+			
 			<div class="app-body">
 				<div data-side="player"></div>
+			{{#if isMenuLoadBattle}}	
+			<div class="psevd-save" id="crack">
+			<div class="saver1" >
+            <h2>Загрузка битвы</h2>
+            <button class="delx" type="submit" method="GET" id="exec" action="/index">Отмена</button>
+            <div class="saves">
+				
+                {{#each time_op}}
+                <div class="one-save">
+                    <p>Сложность:
+						{{compare rang_ai}}
+						
+						{{time_ai}}</p>
+                    <button class="loadx" type="submit" id="{{time_ai}}">Загрузить</button>
+                </div>
+{{/each}}
+            </div>
+		</div>
+			</div>
+			<script src="src/additLoadMenu.js"></script>
+		{{/if}}
 				<div class="app-menu">
 					<p class="app-menu-text">Одиночная игра</p>
 					<div class="app-actions" data-scene="preparation">

@@ -4,6 +4,7 @@ const session = require('express-session');////FireFox ругается
 const PartyManager = require('./src/PartyManager');
 const pm = new PartyManager();
 const jsonParser = express.json();
+const hbs=require('hbs');
 
 const mysql = require("mysql2");
 const { query } = require('express');
@@ -27,6 +28,21 @@ const connectionsql = mysql.createConnection({
   });
 }
 
+hbs.registerHelper('compare',function(value){
+    if(value===1){
+        return new hbs.SafeString("Рядовой");
+    }
+    if(value===2){
+        return new hbs.SafeString("Лейтенант");
+    }
+    if(value===3){
+        return new hbs.SafeString("Адмирал");
+    }
+    
+    })
+
+
+
 console.log(correctConnection)
 checkConnect(correctConnection);
 console.log(correctConnection);
@@ -34,7 +50,9 @@ let userName='nf';
 let isLogging=false;
 let rasst=[];
 let isRas=false;
-
+let isMenuLoadBattle=false;
+let somemenu=[];
+let dateL=null;
 
 //создание приложения экспресс
 const app = express();
@@ -62,9 +80,23 @@ app.get("/registration(.html)?", function (request, response) {
     response.render("registration.hbs");
 });
 function avs(request,response){
-        console.log(userName,isLogging,'-метаданные входа');
-        response.render("index.hbs",{userName:userName,isLogging:isLogging});
+        console.log(userName,isLogging,isMenuLoadBattle,'-метаданные входа');
+        let g;
+        let menl=somemenu;
+        if(isMenuLoadBattle){
+g=true;
+somemenu=[];
+isMenuLoadBattle=false;
+
+        }else{
+            g=false;
+        }
+        response.render("index.hbs",{userName:userName,isLogging:isLogging,isMenuLoadBattle:g,time_op:menl});
+        
 }
+
+
+
 
 app.get("/index(.html)?",jsonParser, avs);
 app.get("/",jsonParser, avs);
@@ -81,7 +113,7 @@ if(correctConnection&&isLogging){
     Datex=new Date();
     connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"');",
     function(err,results,fields){
-       console.log(err,'-error');
+       console.log(err,'-error_logos_save_strat?');
     
     })
 }})
@@ -142,16 +174,14 @@ isRas=true;
     }})
     app.get("/loados_x", jsonParser, function (request, response) {
         checkConnect();
+        let fg=isRas;
         if(correctConnection&&isLogging&&isRas){
-          //  Datex=new Date();
-        //    connectionsql.query('select login,time,ships,shots from database1.battlefield where login="'+userName+'" and time="'+request.body.date+'"',
-          //  function(err,results,fields){
-            //    console.log(err,'-error loaded');
-              //  console.log('loading ships',results[0].ships);
-                //let a=results[0].ships;
-                //console.log('loading ships a',results[0].ships);
+      
+
+            
                 console.log('try to rast');
-                response.json({isRas:true,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
+                response.json({isRas:fg,login:rasst.login,time:rasst.time,ships:rasst.ships,shots:rasst.shots});
+                isRas=false;
             }else{
                 response.json({isRas:false});
             }
@@ -174,28 +204,60 @@ app.post("/save_battle", jsonParser, function (request, response) {
         Datex=new Date();
         connectionsql.query('insert into database1.ai_battlefield values ("'+userName+'","'+Datex+'",'+"'"+rang_ai+"','"+ships_ai+"','"+shots_ai+"','"+ships_pl+"','"+shots_pl+"');",
         function(err,results,fields){
-           console.log(err,'-error');
-         
+           console.log(err,'_save_battle_server?');
+         response.json({awaiter:0});
          
         })
     }})
+    app.post("/load_battle_ai", jsonParser, function (request, response) {
+        checkConnect();
+        if(correctConnection&&isLogging){
+
+            let date=JSON.stringify(request.body.date);
+            console.log("is date loading battle server",date);
+
+            dateL=date;
+            connectionsql.query('select * from database1.ai_battlefield where login_ai="'+userName+'" and time_ai='+dateL+'',
+            function(err,results,fields){
+                console.log(err,'-error loaded');
+                console.log('result in load battle server_ai')
+                response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
+            })
+
+
+        }})
   app.post("/load_battle", jsonParser, function (request, response) {
         checkConnect();
         if(correctConnection&&isLogging){
             Datex=new Date();
-            connectionsql.query('select * from database1.ai_battlefield where login_ai="'+userName+'"',
+            console.log('this dateL',dateL);
+            connectionsql.query('select * from database1.ai_battlefield where login_ai="'+userName+'" and time_ai='+dateL+'',
             function(err,results,fields){
                 console.log(err,'-error loaded');
-              //  console.log('loading ships',results[0].ships);
-        
-        
-
-                //let a=results[0].ships;
-                //console.log('loading ships a',results[0].ships);
+                console.log('result in load battle server',results)
                 response.json({login_ai:results[0].login_ai,time_ai:results[0].time_ai,rang_ai:results[0].rang_ai,ships_ai:results[0].ships_ai,shots_ai:results[0].shots_ai,ships_pl:results[0].ships_pl,shots_pl:results[0].shots_pl});
             })
             console.log("werify");
         }})
+
+
+        app.post("/load_menu_battle", jsonParser, function (request, response) {
+            checkConnect();
+            if(correctConnection&&isLogging){
+                Datex=new Date();
+                connectionsql.query('select time_ai,rang_ai from database1.ai_battlefield where login_ai="'+userName+'"',
+                function(err,results,fields){
+                    console.log(err,'-error loaded battle');
+
+                   // console.log('hehehe',request.body.aps);
+                    isMenuLoadBattle=true;
+                    somemenu=results;
+                   console.log('some try/-')
+                    response.json({time_op:results,isMenuLoadBattle:isMenuLoadBattle});
+                  //  isMenuLoadBattle=false;
+                })
+                console.log("/load_menu_battle");
+            }})
 app.post("/auth", jsonParser, function (request, response) {
 let correctUserx=false;
 let countUserx=-1;

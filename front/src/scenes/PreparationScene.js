@@ -11,22 +11,82 @@ const shipDatas = [
 	{ size: 1, direction: "row", startX: 145, startY: 480 },
 ];
 
+
+document.addEventListener('DOMContentLoaded', function(){
+	console.log('gafg',)/////document.querySelectorAll(".loadx"))
+})
+
+
+
+
+function allxc(ert){
+	document.querySelectorAll(".loadx").forEach(i=>i.addEventListener("click",event=>{//выбираем все кнопки загрузить и их id
+		console.log(event.target.innerText);
+		console.log(event.target.id);
+		let userCV=JSON.stringify({date:event.target.id});
+		let requestCV = new XMLHttpRequest();
+		console.log('WHERE MY CHICKEN 0')
+		requestCV.open("POST", "/load_battle_ai", true);   
+		requestCV.setRequestHeader("Content-Type", "application/json");
+		console.log('wat in battle')
+		
+
+		const matrix =ert.player.matrix;
+		console.log('this is startComputerSave-',matrix.flat().filter((item) => item.ship));
+		const withoutShipItems = matrix.flat().filter((item) => item.ship);
+		
+		let untouchables = [];
+		let strategy = 0;
+		if (true) {
+			strategy = 1;
+		} 
+
+		let user=JSON.stringify({awaiter:0});
+	let request = new XMLHttpRequest();
+	const apper=ert;
+	request.open("POST", "/load_battle", true);   
+	request.setRequestHeader("Content-Type", "application/json");
+	request.addEventListener("load", function () {
+		let receivedUser = JSON.parse(request.response);
+	apper.start("computer", untouchables, receivedUser.rang_ai,true,receivedUser.ships_ai,receivedUser.shots_ai,receivedUser.ships_pl,receivedUser.shots_pl);
+	  }) 
+ request.send(user);
+
+
+		requestCV.addEventListener("load", function () {
+//
+console.log('WHERE MY CHICKEN');
+//startComputerSave();
+	//nsole.log('some actions on loadx in prepa',document.body.app);  
+///////////////////////////////////////////////////////////
+/////////////////////////////////////////////
+		})}))}
+
+
 class PreparationScene extends Scene {
 	draggedShip = null;
 	draggedOffsetX = 0;
 	draggedOffestY = 0;
 	removeEventListeners = [];
 
+
+
+	
+
 	init() {
 		this.manually();
 	}
 
 	start() {
-		const { player, opponent } = this.app;
+		var { player, opponent } = this.app;
 
 		opponent.clear();
 		player.removeAllShots();
 		player.ships.forEach((ship) => (ship.killed = false));
+
+
+		document.addEventListener('DOMContentLoaded',allxc(this.app));
+			
 
 		this.removeEventListeners = [];
 		document.querySelectorAll('.app-menu-text').forEach(element => element.classList.remove('hidden'));
@@ -46,8 +106,8 @@ class PreparationScene extends Scene {
 		const middleButton = document.querySelector('[data-computer="middle"]');
 		const hardButton = document.querySelector('[data-computer="hard"]');
 		const randomButton = document.querySelector('[data-type="random"]');
-		const loadBatButton = document.querySelector('[data-type="load_battle"]');
-
+		const loadBatButton = document.querySelector('[data-type="load_battle"]');//загрузка сохраненной битвы
+		const loadBatButtonNULL = document.querySelector('[data-type="load_battleNULL"]');//загрузка сохраненной битвы
 
 		this.removeEventListeners.push(addListener(loadButton, "click", () => this.load_strat()));
 		this.removeEventListeners.push(addListener(saveButton, "click", () => this.save_strat()));
@@ -59,8 +119,8 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(middleButton, "click", () => this.startComputer("middle")));
 		this.removeEventListeners.push(addListener(hardButton, "click", () => this.startComputer("hard")));
 		this.removeEventListeners.push(addListener(randomButton, "click", () => this.app.start("online", "random")));
-		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.startComputerSave()));
-		//const {player} = this.app;
+		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.loadMenuBattle()));//загрузка сохраненной битвы
+		this.removeEventListeners.push(addListener(loadBatButtonNULL, "click", () => this.startComputerSave()));//загрузка сохраненной битвы
 		console.log('Загрузка.....');
 		let user=JSON.stringify(this.app.player.matrix);
 		let request = new XMLHttpRequest();
@@ -70,16 +130,11 @@ class PreparationScene extends Scene {
 			console.log('valor',request.response)
 			let receivedUser = JSON.parse(request.response);
 			if(receivedUser.isRas){
-			
 			if(receivedUser)
 			console.log('xccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
-		
 			player.shots=receivedUser.shots;
 			player.matrix=receivedUser.battlefield;
-			
-		//	console.log('ships------',player.shots);
-		//	console.log('received-',receivedUser.ships)
-			player.randomize1(ShipView,receivedUser.ships); //не работает
+			player.randomize1(ShipView,receivedUser.ships); //не работает, или работает???????
 	
 			}
 		});
@@ -150,7 +205,7 @@ class PreparationScene extends Scene {
 			}
 		}
 
-		// Врощаение
+		// Вращаение
 		if (this.draggedShip && mouse.delta) {
 			this.draggedShip.toggleDirection();
 		}
@@ -161,10 +216,7 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-computer="hard"]').disabled = false;
 			document.querySelector('[data-type="random"]').disabled = false;
 			document.querySelector('[data-computer="difficulty"]').disabled = false;
-           
 			document.querySelector('[data-type="save_strat"]').disabled = false;
-	//		document.querySelector('[data-type="load_strat"]').disabled = false;
-	//		document.querySelector('[data-type="load_battle"]').disabled = false;
 		}
 		else {
 			document.querySelector('[data-computer="simple"]').disabled = true;
@@ -173,8 +225,6 @@ class PreparationScene extends Scene {
 			document.querySelector('[data-type="random"]').disabled = true;
 			document.querySelector('[data-computer="difficulty"]').disabled = true;
 			document.querySelector('[data-type="save_strat"]').disabled = true;
-	//		document.querySelector('[data-type="load_strat"]').disabled = true;
-	//		document.querySelector('[data-type="load_battle"]').disabled = true;
 		}
 	}
     save_strat(){
@@ -195,58 +245,13 @@ class PreparationScene extends Scene {
 		let request = new XMLHttpRequest();
 		request.open("GET", "/loados", true);   
 		request.setRequestHeader("Content-Type", "application/json");
-	//	request.addEventListener("load", function () {
-			
-			//let receivedUser = JSON.parse(request.response);
-			
-		//	console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
-		
-			//player.shots=receivedUser.shots;
-			//player.matrix=receivedUser.battlefield;
-			
-		//	console.log('ships------',player.shots);
-		//	console.log('received-',receivedUser.ships)
-			//player.randomize1(ShipView,receivedUser.ships); //не работает
-	
 
-	//	});
 	 request.send(user);
 	}
-
-
-/*
-load_strat(){
-		const {player} = this.app;
-		console.log('Загрузка.....');
-		let user=JSON.stringify(this.app.player.matrix);
-		let request = new XMLHttpRequest();
-		request.open("POST", "/loados_x", true);   
-		request.setRequestHeader("Content-Type", "application/json");
-		request.addEventListener("load", function () {
-			
-			let receivedUser = JSON.parse(request.response);
-			
-		//	console.log('ccccccccccccccddddddddddddddddddddddcccccccccccccccccccdddddd',receivedUser);
-		
-			player.shots=receivedUser.shots;
-			player.matrix=receivedUser.battlefield;
-			
-		//	console.log('ships------',player.shots);
-		//	console.log('received-',receivedUser.ships)
-			player.randomize1(ShipView,receivedUser.ships); //не работает
-	
-		});
-	 request.send(user);
-	}
-*/
-
-
-
 	//Случайная расстановка
 	randomize() {
 		const {player} = this.app;
 		this.app.player.randomize(ShipView);
-
 		for (let i = 0; i < 10; i++) {
 			const ship = player.ships[i];
 			ship.startX = shipDatas[i].startX;
@@ -272,7 +277,6 @@ load_strat(){
 			const ship = player.ships[i];
 			ship.startX = shipDatas[i].startX;
 			ship.startY = shipDatas[i].startY;
-			//console.log(ship.startX,ship.startY);
 		}
 	}
 
@@ -307,9 +311,78 @@ load_strat(){
 		let ships_ai,shots_ai,ships_pl,shots_pl=null;
 		this.app.start("computer", untouchables, strategy,false,ships_ai,shots_ai,ships_pl,shots_pl);
 	}
+
+	loadMenuBattle(){
+	
+		
+
+		
+    let request = new XMLHttpRequest();
+	const apper=this.app;
+	let user=JSON.stringify({awaiter:0});
+    request.open("POST", "/load_menu_battle", true);   
+    request.setRequestHeader("Content-Type", "application/json");
+	request.addEventListener("load", function () {
+		const requs=JSON.parse(request.response);
+		console.log('requs',requs);
+		if (requs.isMenuLoadBattle){
+			console.log('try to load in client preparation scene load menubatle');
+			
+		//
+		/*/////////////////////////////////////////////необходима прослушка
+			document.querySelectorAll(".loadx").forEach(i=>i.addEventListener("click",event=>{//выбираем все кнопки загрузить и их id
+				console.log(event.target.innerText);
+				console.log(event.target.id);
+				let user=JSON.stringify({date:event.target.id});
+				let request = new XMLHttpRequest();
+				request.open("POST", "/load_battle_ai", true);   
+				request.setRequestHeader("Content-Type", "application/json");
+				console.log('wat in battle')
+				request.addEventListener("load", function () {
+			console.log('some actions on loadx in prepa',document.body.app);  
+			
+//
+//
+///
+//
+//
+//
+//
+//
+//
+//
+//startComputerSave();
+//
+//
+//
+//
+//
+//
+//}) 
+			 request.send(user);
+			
+			// let buttonVX=document.getElementById('loadNULL').submit;
+			//console.log('buttonVX');
+		//	 document.getElementById("crack").remove();
+			})
+			)
+			*/
+		}
+		window.location.href="/index";
+	  }) 
+ request.send(user);
+	}
+
+
+
+
+	tryHard(dat){
+		console.log('///////////////////////////////dat',dat);
+	}
+	/////////////////////////////////////////////////////////////////////
 	startComputerSave() {
 		const matrix = this.app.player.matrix;
-		console.log('verk-',matrix.flat().filter((item) => item.ship));
+		console.log('this is startComputerSave-',matrix.flat().filter((item) => item.ship));
 		const withoutShipItems = matrix.flat().filter((item) => item.ship);
 		
 		let untouchables = [];
@@ -319,29 +392,15 @@ load_strat(){
 		} 
 
 		let user=JSON.stringify({awaiter:0});
-    
-		
     let request = new XMLHttpRequest();
-    //console.log(userName,userPassword);
-	//console.log('vex',this);
 	const apper=this.app;
     request.open("POST", "/load_battle", true);   
     request.setRequestHeader("Content-Type", "application/json");
     request.addEventListener("load", function () {
-		let ships_ai,shots_ai,ships_pl,shots_pl;
-		let rang_ai;
-
 		let receivedUser = JSON.parse(request.response);
-   // console.log(request);
-    //console.log(request.response)
-    
-   
 	apper.start("computer", untouchables, receivedUser.rang_ai,true,receivedUser.ships_ai,receivedUser.shots_ai,receivedUser.ships_pl,receivedUser.shots_pl);
       }) 
  request.send(user);
 		
 	}
-	
-	
-
 }

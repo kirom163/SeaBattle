@@ -144,7 +144,53 @@ body {
 	left:34%;
 	text-align: center;
 }
+.psevd-save{
+	width: 1920px;
+	height: 1080px;
+	z-index: 18;
+	left:0;
+	top:0;
+	position:fixed;
+	
+}
+.specialNULL{
+	width:0;
+	position: relative;
+	height:0;
+	opacity: 1;
+	top:-500px;
+	
+}
+.saver1{
+	display: block;
+	position: fixed;
+	width: 600px;
+	height: 500px;
+	border: 2px solid black;
+	
+	
+	margin-left: 34%;
+	margin-top: 150px;
+	text-align: center;
+	background-color:aquamarine ;
+	opacity: 1;
+	animation: showM;
+	animation-duration: 1s;
+}
+@keyframes showM {
+	from{opacity: 0;}
+	to{opacity: 1;}
+	
+}
 .delx{
+	font-size: 30px;
+}
+.delx1{
+
+	
+	min-width: 30px;
+	min-height: 30px;
+	background-color: #0400ff;
 	font-size: 30px;
 }
 .one-save{

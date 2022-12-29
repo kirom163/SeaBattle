@@ -1,3 +1,5 @@
+
+
 class ComputerScene extends Scene {
 	untouchables = [];
 	strategy = 0;
@@ -74,10 +76,12 @@ class ComputerScene extends Scene {
     //console.log(userName,userPassword);
     request.open("POST", "/save_battle", true);   
     request.setRequestHeader("Content-Type", "application/json");
+	console.log("is this????????");
     request.addEventListener("load", function () {
    // console.log(request);
    // console.log(request.response)
- 
+alert('сохранение битвы успешно');
+window.location.href='/index';
 
     //let receivedUser = JSON.parse(request.response);
     //console.log(receivedUser);
