@@ -61,6 +61,7 @@ let dateL=null;
 
 //создание приложения экспресс
 const app = express();
+
 app.set('view engine','hbs');
 const dn=__dirname.length
 const dirk=__dirname.slice(0,dn-5);
@@ -76,6 +77,8 @@ app.use(session({
     name: 'sessionId'
 }));
 
+app.use(express.static('SeaBattle'));
+app.use(express.static( dirk +'/images'));
 //парсер данных формы
 const urlencodedParser = express.urlencoded({extended: false});
 app.get("/authorize(.html)?", function (request, response) {
@@ -125,6 +128,7 @@ if(correctConnection&&isLogging){
 }else{
     //HEHE
     if(!correctConnection){
+        console.log('true error of SQL')
         response.json({correctConnection:correctConnection});
     }
     //
@@ -225,6 +229,10 @@ isRas=true;
     app.get('/syst',jsonParser,function(request,response){
 
         response.render('syst.hbs',{userName:userName,isLogging:isLogging});
+    })
+    app.get('/about',jsonParser,function(request,response){
+
+        response.render('about.hbs',{userName:userName,isLogging:isLogging});
     })
         
     

@@ -230,6 +230,9 @@ body {
 }
 
 
+.fef a{
+	display:block;
+}
 #DropdownHelp{
 	top:555px;
 }
@@ -237,6 +240,10 @@ body {
 	background-color: #ddd;
 }
 
+.img-op{
+	border: dashed 8px #5ddce6;
+	margin:10px;
+}
 .shot {
 	width: 32px;
 	height: 32px;

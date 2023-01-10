@@ -107,6 +107,7 @@ class PreparationScene extends Scene {
 		const loadBatButton = document.querySelector('[data-type="load_battle"]');//загрузка сохраненной битвы
 		const helpButton = document.querySelector('[data-action="helpings"]');//справка правила игры
 		const systButton = document.querySelector('[data-action="syst"]');//справка о системе
+		const systhButton = document.querySelector('[data-action="abouts"]');//справка о системе
 		
 
 		this.removeEventListeners.push(addListener(loadButton, "click", () => this.load_strat()));
@@ -122,7 +123,7 @@ class PreparationScene extends Scene {
 		this.removeEventListeners.push(addListener(loadBatButton, "click", () => this.loadMenuBattle()));//загрузка сохраненной битвы
 		this.removeEventListeners.push(addListener(helpButton, "click", () => this.entire()));//справка правила игры
 		this.removeEventListeners.push(addListener(systButton, "click", () => window.open('syst')));//справка о системе
-		
+		this.removeEventListeners.push(addListener(systhButton, "click", () => window.open('about')));//справка о системе
 		console.log('Загрузка.....');
 		let user=JSON.stringify(this.app.player.matrix);
 		let request = new XMLHttpRequest();
@@ -255,15 +256,22 @@ class PreparationScene extends Scene {
 	}
     save_strat(){
 		console.log('кеееек');
+
 		let user=JSON.stringify({ships:this.app.player.ships,shots:this.app.player.shots,matrix:this.app.player.matrix});
 		let request = new XMLHttpRequest();
 		request.open("POST", "/logos", true);   
 		request.setRequestHeader("Content-Type", "application/json");
 		console.log('hehehehe',this.app.player);
-		
+		request.addEventListener("load", function () {
+			let receivedUser = JSON.parse(request.response);
+			
+			console.log('some FFFFFFFFFFFFFFFF trouble in load_strat')
+			if(!receivedUser.correctConnection){alert('ошибка:60 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
+		alert('расстановка успешно сохранена');}
 	 request.send(user);
 
 	}
+	)}
 	load_strat(){
 		const {player} = this.app;
 		console.log('Загрузка..... load_strat');
