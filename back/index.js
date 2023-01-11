@@ -116,9 +116,11 @@ let part=JSON.stringify(request.body.ships);
 let cart=JSON.stringify(request.body.shots);
 //let bart=JSON.stringify(request.body.matrix);
 
+console.log("JAN?")
 checkConnect();
 if(correctConnection&&isLogging){
     Datex=new Date();
+    console.log('JAN date',Datex);
     connectionsql.query('insert into database1.battlefield values ("'+userName+'","'+Datex+'",'+"'"+part+"','"+cart+"');",
     function(err,results,fields){
        console.log(err,'-error_logos_save_strat?');
@@ -142,6 +144,7 @@ if(correctConnection&&isLogging){
     connectionsql.query('select time from database1.battlefield where login="'+userName+'"',
     function(err,results,fields){
         console.log(err,'-error date');
+    
         response.render('loados.hbs',{date:results,userName:userName,isLogging:isLogging});
     })
     

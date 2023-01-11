@@ -267,11 +267,12 @@ class PreparationScene extends Scene {
 			
 			console.log('some FFFFFFFFFFFFFFFF trouble in load_strat')
 			if(!receivedUser.correctConnection){alert('ошибка:60 Отсутствует соединение с базой данных, обратитесь к администратору ');}else{
-		alert('расстановка успешно сохранена');}
+		alert('расстановка успешно сохранена');}})
 	 request.send(user);
 
-	}
-	)}
+	
+	
+}
 	load_strat(){
 		const {player} = this.app;
 		console.log('Загрузка..... load_strat');
